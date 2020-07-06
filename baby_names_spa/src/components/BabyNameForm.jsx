@@ -1,14 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector} from 'react-redux'
 import { get, post } from 'axios'
-import { getBabies } from '../redux/actions/baby-actions'
+import { getBabies, addStrikeBaby, trueStrikeBaby, falseStrikeBaby } from '../redux/actions/baby-actions'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Jumbotron from 'react-bootstrap/Jumbotron'
-import Card from 'react-bootstrap/Card'
-import CardDeck from 'react-bootstrap/CardDeck'
 import Button from 'react-bootstrap/Button'
 import { toast } from 'react-toastify';
 import { listID } from '../redux/actions/list-actions';
@@ -17,9 +15,9 @@ import { listID } from '../redux/actions/list-actions';
 const BabyNameForm = (props) => {
 
     const dispatch = useDispatch();
-    const {babiesList} = useSelector(state => ({ babiesList: state.babiesList }))
-    const { user } = useSelector(state => ({ user: state.myList.list_id }))
-    const [struck, setStruck] = React.useState(false)
+    const { babiesList } = useSelector(state => ({ babiesList: state.babiesList }))
+    // const { user } = useSelector(state => ({ user: state.myList.list_id }))
+    // const [ struck, setStruck ] = React.useState(false)
 
     React.useEffect(() => {
         const gettingBabies = async () => {
@@ -30,6 +28,7 @@ const BabyNameForm = (props) => {
                if (response.status === 200){
                     babies = response.data
                     dispatch(getBabies(babies))
+                    dispatch(addStrikeBaby(babiesList))
                }
            } catch{
                 // Heavy duty error catching
@@ -40,11 +39,10 @@ const BabyNameForm = (props) => {
         // necessary due to usage of redux-persist 
         const updatingUser = async () => {
             let response = null;
-            let user = null;
             try {
                 response = await get(`http://localhost:3001/${props.match.url}`)
                 if (response.status === 200){
-                    dispatch(listID(response.data.list))
+                    localStorage.setItem('user_id', response.data.list.id)
                 }
             } catch {
                 // Heavy duty error catching   
@@ -55,27 +53,46 @@ const BabyNameForm = (props) => {
     }, [])
 
     const showBabies = () => {
+        let user = localStorage.getItem('user_id')
         return babiesList.babies.map(baby => {
-            if (user.id === baby.list_id){
+            if (parseInt(user) === baby.list_id){
                 return(
-                    <div key={baby.id} id="baby-name">
-                        <Card  style={{width: '18rem'}} className="mb-2">
-                            <Card.Body>
-                                <Card.Title>{baby.baby_name}</Card.Title>
-                            </Card.Body>
-                        </Card>
-                    </div>
+                    <li
+                        key={baby.id}
+                        style={{
+                            cursor: "pointer",
+                            textDecorationLine: baby.strike ? "line-through" : "none"
+                        }}
+                        onClick={() => {
+                            if(!baby.strike){
+                                console.log('clicked!')
+                                dispatch(trueStrikeBaby(baby.id))
+                            } else {
+                                dispatch(falseStrikeBaby(baby.id))
+                            }
+                        }}
+                    >
+                        {baby.baby_name}
+                    </li>
                 )
             }
         })
     }
+
+    // const handleClick = () => {
+    //     if (!struck){
+    //         setStruck(true)
+    //     } else {
+    //         setStruck(false)
+    //     }
+    // }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         const babyName = document.getElementById('formBabyName').value
         const request = {
             "baby": {
-                list_id: user.id,
+                list_id: localStorage.getItem('user_id'),
                 baby_name: babyName.toLowerCase().trim()
             }
         }
@@ -91,6 +108,7 @@ const BabyNameForm = (props) => {
                         if (newResponse.status === 200){
                             babies = newResponse.data
                             dispatch(getBabies(babies))
+                            dispatch(addStrikeBaby(babies))
                             let element = document.getElementById('cards');
                             element.scrollTop = element.scrollHeight;
                         }
@@ -113,7 +131,7 @@ const BabyNameForm = (props) => {
     }
 
     return(
-        <Container >
+        <Container style={{ margin: '10px'}}>
             <Row>
                 <Col>
                     <Jumbotron>
@@ -132,9 +150,9 @@ const BabyNameForm = (props) => {
                     </Jumbotron>
                 </Col>
                 <Col>
-                    <CardDeck id="cards" style={{'maxHeight': '50vh', 'overflowY': 'auto', 'border': 'black'}}>
+                    <ul>
                         {showBabies()}
-                    </CardDeck>
+                    </ul>
                 </Col>
             </Row>
         </Container>
