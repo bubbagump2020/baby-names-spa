@@ -11,27 +11,24 @@ export function babiesList(state = initialState, action){
                 ...state,
                 babies: action.payload
             }
-        case babyActions.ADD_STRIKE_BABY:
+        case babyActions.ENABLE_BABY:
             return{
                 ...state,
-                babies: state.babies.map(baby => ({
-                    ...baby,
-                    strike: false
-                }))
-            }
-        case babyActions.TRUE_STRIKE_BABY:
-            return{
-                ...state,
-                babies: state.babies.map(baby => baby.id === action.payload ? 
-                    { ...baby, strike: true } : baby    
+                babies: state.babies.map(baby => baby.id === action.payload ?
+                    { ...baby, enabled: true } : baby   
                 )
             }
-        case babyActions.FALSE_STRIKE_BABY:
+        case babyActions.DISABLE_BABY:
             return{
                 ...state,
-                babies: state.babies.map(baby => baby.id === action.payload?
-                    { ...baby, strike: false } : baby    
+                babies: state.babies.map(baby => baby.id === action.payload ?
+                    { ...baby, enabled: false } : baby    
                 )
+            }
+        case babyActions.ADD_BABY:
+            return{
+                ...state,
+                babies: [ ...state.babies, action.payload]
             }
         default:
             return state

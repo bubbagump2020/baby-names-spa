@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector} from 'react-redux'
-import { get, post } from 'axios'
-import { getBabies, addStrikeBaby, trueStrikeBaby, falseStrikeBaby } from '../redux/actions/baby-actions'
+import { get, post, patch } from 'axios'
+import { getBabies, enableBaby, disableBaby, addBaby } from '../redux/actions/baby-actions'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -9,15 +9,11 @@ import Form from 'react-bootstrap/Form'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Button from 'react-bootstrap/Button'
 import { toast } from 'react-toastify';
-import { listID } from '../redux/actions/list-actions';
-
 
 const BabyNameForm = (props) => {
 
     const dispatch = useDispatch();
     const { babiesList } = useSelector(state => ({ babiesList: state.babiesList }))
-    // const { user } = useSelector(state => ({ user: state.myList.list_id }))
-    // const [ struck, setStruck ] = React.useState(false)
 
     React.useEffect(() => {
         const gettingBabies = async () => {
@@ -28,10 +24,9 @@ const BabyNameForm = (props) => {
                if (response.status === 200){
                     babies = response.data
                     dispatch(getBabies(babies))
-                    dispatch(addStrikeBaby(babiesList))
                }
            } catch{
-                // Heavy duty error catching
+                // Heavy duty error catching if needed
            }
 
         }
@@ -45,7 +40,7 @@ const BabyNameForm = (props) => {
                     localStorage.setItem('user_id', response.data.list.id)
                 }
             } catch {
-                // Heavy duty error catching   
+                // Heavy duty error catching if needed
             }
         }
         gettingBabies();
@@ -57,35 +52,50 @@ const BabyNameForm = (props) => {
         return babiesList.babies.map(baby => {
             if (parseInt(user) === baby.list_id){
                 return(
-                    <li
-                        key={baby.id}
-                        style={{
-                            cursor: "pointer",
-                            textDecorationLine: baby.strike ? "line-through" : "none"
-                        }}
-                        onClick={() => {
-                            if(!baby.strike){
-                                console.log('clicked!')
-                                dispatch(trueStrikeBaby(baby.id))
-                            } else {
-                                dispatch(falseStrikeBaby(baby.id))
-                            }
-                        }}
-                    >
-                        {baby.baby_name}
-                    </li>
+                    <div key={baby.id} style={{cursor: "pointer"}}>
+                        <li><br></br>
+                            <p onClick={handleClick} id={baby.id} style={{textDecorationLine: baby.enabled ? "none" : "line-through",}}>
+                                {baby.baby_name}
+                            </p>
+                        </li>
+                    </div>
                 )
             }
         })
     }
 
-    // const handleClick = () => {
-    //     if (!struck){
-    //         setStruck(true)
-    //     } else {
-    //         setStruck(false)
-    //     }
-    // }
+    const handleClick = async (e) => {
+        e.preventDefault()
+        let thisBaby = {}
+        let babies = babiesList.babies
+        for(let i = 0; i < babies.length; i++){
+            if(parseInt(e.target.id) === babies[i].id){
+                thisBaby = babies[i]
+            }
+        }
+        if (thisBaby.enabled){
+            thisBaby.enabled = false
+            dispatch(disableBaby(thisBaby.id))
+        } else {
+            thisBaby.enabled = true
+            dispatch(enableBaby(thisBaby.id))
+        }
+        let request = {
+            "baby": {
+                "enabled": thisBaby.enabled
+            }
+        }
+        try{
+            await patch(`http://localhost:3001/babies/${thisBaby.id}`, request)
+        } catch{
+
+        }
+    }
+
+    window.onload=function() {
+        let element = document.getElementById("name-list")
+        element.scrollTop = element.scrollHeight
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -99,26 +109,12 @@ const BabyNameForm = (props) => {
         let response = null
         try{
             response = await post('http://localhost:3001/babies', request)
-            if(response.status === 201){
-                let newResponse = null
-                let babies = []
-                if(response.data.message !== undefined || response.data.message !== null){
-                    try{
-                        newResponse = await get('http://localhost:3001/babies')
-                        if (newResponse.status === 200){
-                            babies = newResponse.data
-                            dispatch(getBabies(babies))
-                            dispatch(addStrikeBaby(babies))
-                            let element = document.getElementById('cards');
-                            element.scrollTop = element.scrollHeight;
-                        }
-                    } catch {
-                        //Heavy duty error catching
-                    }
-                }
+            if(response.data.baby){
+                dispatch(addBaby(response.data.baby))
             }
-            if(response.status === 200){
-                response.data.messages.map(message => {
+            if(response.data.messages){
+                let messages = response.data.messages.length
+                messages.map(message => {
                     toast.error(message,{
                         position: "top-center",
                         hideProgressBar: true,
@@ -126,7 +122,7 @@ const BabyNameForm = (props) => {
                 })
             }
         } catch(err){
-            // Heavy duty error catching
+            // Heavy duty error catching if needed
         }
     }
 
@@ -149,8 +145,9 @@ const BabyNameForm = (props) => {
                         </Form>
                     </Jumbotron>
                 </Col>
-                <Col>
-                    <ul>
+                <Col style={{fontSize: "24px", textAlign: "center"}}>
+                    <h1>Baby Names!</h1>
+                    <ul id="name-list" style={{listStyle: "none", overflowAnchor: "bottom", overflow: "scroll", height: "50vh"}}>
                         {showBabies()}
                     </ul>
                 </Col>

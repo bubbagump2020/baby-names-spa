@@ -18,9 +18,10 @@ Core Requirements: Met
 ## TODO - Stretch Goals
 
 ~~ 1. Use Redux state management for the UI ~~ 
-2. Clicking on a name crosses it out (and clicking again un-crosses it out). This crossed-out state should persist across sessions and between users viewing the same list.
+~~ 2. Clicking on a name crosses it out (and clicking again un-crosses it out). This crossed-out state should persist across sessions and between users viewing the same list. ~~
 ~~ 3. Only allow names with letters and (at most) one space. ○ Good:  ‘Sally Lou’, ’Stanley’, ‘JoeBob Pringles’ ○ Bad: ‘C3P0’, ’Stan the Man’ ~~ Note: Half done, triple names and up still allowed
-~~ 4. Real-time updates when multiple people are working on the same list ● Client-side sorting of names (Alphabetical, By Input Time, By Length) ~~ Note: Might be done, difficult to test currently
+~~ 4. Real-time updates when multiple people are working on the same list  ~~ Note: Might be done, difficult to test currently
 5. Allow the user to manually prioritize the list using drag-and-drop functionality 
+6. Client-side sorting of names (Alphabetical, By Input Time, By Length)
 
-Stretch Goals: Half done
+Stretch Goals: Mostly done
