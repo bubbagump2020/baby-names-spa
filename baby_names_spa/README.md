@@ -2,7 +2,7 @@
 
 ## TODO - Core Requirements
 
-~~1. Upon first visit, Users should default to working on a new distinct list~~  return
+~~1. Upon first visit, Users should default to working on a new distinct list~~  
 ~~2. A user’s list should have an ID (alphanumeric 12-character string) that uniquely identifies it~~
 ~~3. The URL upon first visit should include (?list_id=) and the auto-generated list_id~~
 ~~4. If a user goes to “/” they should be redirected to “/?list_id=xxxxxxxxxx” (a new list)~~
