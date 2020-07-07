@@ -1,9 +1,9 @@
-import { get } from 'axios'
-import { ROOT_URL } from '../components/Constants'
+
+const ROOT_URL = 'baby-maker-2000-api.com'
 
 export const handler = async (event, context, callback) => {
     try{
-        const response = await get(`${ROOT_URL}/babies`)
+        const response = await axios.get(`${ROOT_URL}/babies`)
         const data = response.data
         console.log(data)
         return{
