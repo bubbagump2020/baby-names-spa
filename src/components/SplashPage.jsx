@@ -19,7 +19,7 @@ const SplashPage = () => {
             }
             // let response = null
 
-            let response = await get('https://baby-maker-2000.netlify.app/functions/babies-index')
+            let response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
             console.log(response)
 
             // try {
