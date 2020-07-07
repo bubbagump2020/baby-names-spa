@@ -1,9 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom'
-import { post } from 'axios'
+import { post, get } from 'axios'
 import randomstring from 'randomstring'
 import { ROOT_URL } from './Constants'
-import { handler } from '../components/functions/babies-index'
 
 const SplashPage = () => {
 
@@ -20,7 +19,7 @@ const SplashPage = () => {
             }
             // let response = null
 
-            const response = handler()
+            let response = await get('https://baby-maker-2000.netlify.app/functions/babies-index')
             console.log(response)
 
             // try {
