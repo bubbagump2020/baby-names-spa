@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { post } from 'axios'
 import randomstring from 'randomstring'
 import { ROOT_URL } from './Constants'
-// import { netlifyGetBabies } from '../../functions/babies-index'
+import { netlifyGetBabies } from '../functions/babies-index'
 
 const SplashPage = () => {
 
@@ -20,7 +20,7 @@ const SplashPage = () => {
             }
             // let response = null
 
-            // console.log(netlifyGetBabies())
+            console.log(netlifyGetBabies())
 
             // try {
             //     response = await post(`${ROOT_URL}/lists`, request)

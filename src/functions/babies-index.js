@@ -10,6 +10,7 @@ export const netlifyGetBabies = async () => {
                 statusCode: 200,
                 body: response.data
             })
+            console.log(response)
         } catch(err){
             callback(err)
         }
