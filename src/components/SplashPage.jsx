@@ -19,7 +19,7 @@ const SplashPage = () => {
             }
             // let response = null
             
-            fetch("https://baby-maker-2000-api.herokuapp.com/.netlifyfunctions/babies-index")
+            fetch("http://baby-maker-2000.netlify.app/.netlifyfunctions/babies-index")
                 .then(response => response.json())
                 .then(data => console.log(data))
             // try {

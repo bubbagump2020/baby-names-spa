@@ -1,6 +1,6 @@
 [build]
     command = "yarn build"
-    functions = "./src/components/functions"
+    functions = "./functions"
     publish = "build"
 
 
