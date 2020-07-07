@@ -1,13 +1,6 @@
 import { get } from 'axios'
 import { ROOT_URL } from '../../components/Constants'
 
-exports.handler = function(event, contxt, callback){
-    callback(null, {
-        statusCode: 200,
-        body: "Hello World!"
-    })
-}
-
 export const netlifyGetBabies = async () => {
     exports.handler = async (event, context, callback) => {
         let response = null;
