@@ -1,7 +1,7 @@
 import { get } from 'axios'
 import { ROOT_URL } from '../components/Constants'
 
-exports.handler = async (event, context, callback) => {
+export const handler = async (event, context, callback) => {
     let response = null;
     try{
         response = await get(`${ROOT_URL}/babies`)
