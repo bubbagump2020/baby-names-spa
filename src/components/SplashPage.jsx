@@ -20,7 +20,7 @@ const SplashPage = () => {
             }
             // let response = null
 
-            // const response = handler()
+            const response = handler()
             // console.log(response)
 
             // try {

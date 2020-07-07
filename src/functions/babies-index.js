@@ -10,7 +10,6 @@ export const handler = async (event, context, callback) => {
             statusCode: 200,
             body: 'hitting the handler'
         }
-        console.log(response)
     } catch(err){
         console.log(err)
         // callback(err)
