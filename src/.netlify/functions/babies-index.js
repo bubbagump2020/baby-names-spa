@@ -9,14 +9,17 @@ exports.handler = function(event, contxt, callback){
 }
 
 export const netlifyGetBabies = async () => {
-    let response = null;
-    try{
-        response = await get(`${ROOT_URL}/babies`)
-        callback(null, {
-            statusCode: 200,
-            body: response.data
-        })
-    } catch(err){
-        callback(err)
+    exports.handler = function(event, context, callback){
+        let response = null;
+        try{
+            response = await get(`${ROOT_URL}/babies`)
+            callback(null, {
+                statusCode: 200,
+                body: response.data
+            })
+        } catch(err){
+            callback(err)
+        }
     }
+    exports.handler()
 }
