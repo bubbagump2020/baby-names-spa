@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom'
 import { post, get } from 'axios'
 import randomstring from 'randomstring'
-import { ROOT_URL } from './Constants'
+
 
 const SplashPage = () => {
 
@@ -19,22 +19,25 @@ const SplashPage = () => {
             }
             let response = null
             
-            try{
-                response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
+
+            // This try - catch block works
+            // try{
+            //     response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
+            //     console.log(response)
+            // } catch (err) {
+            //     console.log(err)
+            // }
+            // This try - catch block is a work in progress
+            try {
+                response = await post('https://baby-maker-2000.netlify.app/.netlify/functions/new-list')
+                // if (response.status === 200) {
+                //     unique_id = response.data.list.unique_id;
+                //     history.push(`/lists/${unique_id}`);
+                // }
                 console.log(response)
             } catch (err) {
                 console.log(err)
             }
-            // try {
-            //     response = await post(`${ROOT_URL}/lists`, request)
-            //     if (response.status === 200) {
-            //         unique_id = response.data.list.unique_id;
-            //         history.push(`/lists/${unique_id}`);
-            //     }
-            //     console.log(response)
-            // } catch {
-
-            // }
             // const response = await fetch(`/lists`,{
             //     method: 'POST',
             //     headers: {
@@ -57,7 +60,7 @@ const SplashPage = () => {
 
     return(
         <div>
-            <h1>SplashPageComponent</h1>
+
         </div>
     )
 }
