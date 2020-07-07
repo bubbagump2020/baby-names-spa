@@ -25,6 +25,7 @@ const SplashPage = () => {
                     unique_id = response.data.list.unique_id;
                     history.push(`/lists/${unique_id}`);
                 }
+                console.log(response)
             } catch {
 
             }
