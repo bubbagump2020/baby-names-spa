@@ -20,7 +20,7 @@ const SplashPage = () => {
             }
             // let response = null
 
-            console.log(netlifyGetBabies())
+            // console.log(netlifyGetBabies())
 
             // try {
             //     response = await post(`${ROOT_URL}/lists`, request)
