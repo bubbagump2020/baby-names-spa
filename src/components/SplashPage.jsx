@@ -18,10 +18,10 @@ const SplashPage = () => {
                 })
             }
             // let response = null
-
-            let response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
-            console.log(response)
-
+            
+            fetch("https://baby-maker-2000-api.herokuapp.com/.netlifyfunctions/babies-index")
+                .then(response => response.json())
+                .then(data => console.log(data))
             // try {
             //     response = await post(`${ROOT_URL}/lists`, request)
             //     if (response.status === 200) {
