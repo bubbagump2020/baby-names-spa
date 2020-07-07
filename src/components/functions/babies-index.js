@@ -1,5 +1,5 @@
 const axios = require("axios")
-const ROOT_URL = 'https://baby-maker-2000-api.com'
+const ROOT_URL = 'https://baby-maker-2000-api.herokuapp.com'
 
 const handler = exports.handler = async (event, context, callback) => {
     try{
