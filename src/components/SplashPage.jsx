@@ -20,7 +20,7 @@ const SplashPage = () => {
             }
             // let response = null
 
-            const response = await('../functions/babies-indx')
+            const response = await('../functions/babies-index')
             console.log(response)
 
             // try {
