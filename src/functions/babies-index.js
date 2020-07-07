@@ -7,7 +7,7 @@ export const handler = async (event, context, callback) => {
         const data = response.data
         return{
             statusCode: 200,
-            body: data
+            body: await data.json()
         }
         console.log(response)
     } catch(err){
