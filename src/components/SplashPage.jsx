@@ -20,7 +20,8 @@ const SplashPage = () => {
             }
             // let response = null
 
-            console.log(data)
+            const response = await('../functions/babies-indx')
+            console.log(response)
 
             // try {
             //     response = await post(`${ROOT_URL}/lists`, request)
