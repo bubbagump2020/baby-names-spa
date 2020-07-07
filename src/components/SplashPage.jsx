@@ -54,7 +54,7 @@ const SplashPage = () => {
 
     return(
         <div>
-
+            <h1>SplashPageComponent</h1>
         </div>
     )
 }
