@@ -14,5 +14,4 @@ export const netlifyGetBabies = async () => {
             callback(err)
         }
     }
-    exports.handler()
 }
