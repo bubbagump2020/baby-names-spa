@@ -1,6 +1,6 @@
 [build]
     command = "yarn build"
-    functions = "/src/.netlify/functions"
+    functions = "./src/netlify/functions"
     publish = "build"
 
 
