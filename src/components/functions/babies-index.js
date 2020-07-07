@@ -1,7 +1,7 @@
 const axios = require("axios")
 const ROOT_URL = 'baby-maker-2000-api.com'
 
-const handler = async (event, context, callback) => {
+exports.handler = async (event, context, callback) => {
     try{
         const response = await axios.get(`${ROOT_URL}/babies`)
         const data = response.data
