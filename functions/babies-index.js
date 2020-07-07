@@ -8,10 +8,10 @@ exports.handler = async (event, context) => {
         console.log(data)
         return{
             statusCode: 200,
-            body: data
+            body: JSON.stringify({ data: data})
         }
     } catch(err){
         console.log(err)
-        // callback(err)
+        body: JSON.stringify({ msg: err.msg })
     }
 }
