@@ -20,8 +20,8 @@ const SplashPage = () => {
             }
             // let response = null
 
-            const response = handler()
-            console.log(response)
+            // const response = handler()
+            // console.log(response)
 
             // try {
             //     response = await post(`${ROOT_URL}/lists`, request)
