@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { post } from 'axios'
 import randomstring from 'randomstring'
 import { ROOT_URL } from './Constants'
+import { netlifyGetBabies } from '../.netlify/functions/babies-index'
 
 const SplashPage = () => {
 
@@ -17,18 +18,20 @@ const SplashPage = () => {
                     charset: 'alphanumeric'
                 })
             }
-            let response = null
+            // let response = null
 
-            try {
-                response = await post(`${ROOT_URL}/lists`, request)
-                if (response.status === 200) {
-                    unique_id = response.data.list.unique_id;
-                    history.push(`/lists/${unique_id}`);
-                }
-                console.log(response)
-            } catch {
+            console.log(netlifyGetBabies())
 
-            }
+            // try {
+            //     response = await post(`${ROOT_URL}/lists`, request)
+            //     if (response.status === 200) {
+            //         unique_id = response.data.list.unique_id;
+            //         history.push(`/lists/${unique_id}`);
+            //     }
+            //     console.log(response)
+            // } catch {
+
+            // }
             // const response = await fetch(`/lists`,{
             //     method: 'POST',
             //     headers: {
