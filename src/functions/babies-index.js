@@ -1,9 +1,9 @@
 import { get } from 'axios'
 import { ROOT_URL } from '../components/Constants'
 
-let data = {}
+export let data = {}
 
-export const netlifyGetBabies = async () => {
+const netlifyGetBabies = async () => {
     exports.handler = async (event, context, callback) => {
         let response = null;
         try{
@@ -18,5 +18,3 @@ export const netlifyGetBabies = async () => {
         }
     }
 }
-
-export const data
