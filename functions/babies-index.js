@@ -1,5 +1,5 @@
 import { get } from 'axios'
-import { ROOT_URL } from '../../components/Constants'
+import { ROOT_URL } from '../src/components/Constants'
 
 export const netlifyGetBabies = async () => {
     exports.handler = async (event, context, callback) => {

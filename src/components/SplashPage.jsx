@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { post } from 'axios'
 import randomstring from 'randomstring'
 import { ROOT_URL } from './Constants'
-import { netlifyGetBabies } from '../netlify/functions/babies-index'
+import { netlifyGetBabies } from '../../functions/babies-index'
 
 const SplashPage = () => {
 
