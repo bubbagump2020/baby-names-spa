@@ -8,7 +8,7 @@ const handler = exports.handler = async (event, context, callback) => {
         console.log(data)
         return{
             statusCode: 200,
-            body: 'hitting the handler'
+            body: data
         }
     } catch(err){
         console.log(err)
