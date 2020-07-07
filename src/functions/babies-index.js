@@ -2,13 +2,13 @@ import { get } from 'axios'
 import { ROOT_URL } from '../components/Constants'
 
 export const handler = async (event, context, callback) => {
-    let response = null;
     try{
-        response = await get(`${ROOT_URL}/babies`)
-        callback(null, {
+        const response = await get(`${ROOT_URL}/babies`)
+        const data = response.data
+        return{
             statusCode: 200,
-            body: response.data
-        })
+            body: data
+        }
         console.log(response)
     } catch(err){
         callback(err)
