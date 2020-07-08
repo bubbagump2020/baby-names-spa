@@ -4,14 +4,29 @@ const ROOT_URL = 'https://baby-maker-2000-api.herokapp.com'
 
 exports.handler = async (event, context) => {
     const form = JSON.parse(event.body)
-    console.log(event)
+    let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+    let xhr = new XMLHttpRequest()
+    let response;
+
     try {
-        const response = await axios.post(`${ROOT_URL}/babies`, form)
-        // console.log(response)
-        return {
-            statusCode: 200,
-            body: JSON.stringify(response.data)
+
+        xhr.open('POST', `${ROOT_URL}/babies`)
+        xhr.setRequestHeader('Content-Type', 'application/json')
+        xhr.send(JSON.stringify(form))
+        xhr.onload = function(e) {
+            if (xhr.readyState === 4){
+                if (xhr.status === 200){
+                    response = JSON.parse(xhr.responseText)
+                } else {
+                    console.log(xhr.statusText)
+                }
+            }
         }
+        return{
+            statusCode: 200,
+            body: response
+        }
+
     } catch (err) {
         console.log(err)
         return {
