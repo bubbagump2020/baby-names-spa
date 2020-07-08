@@ -16,7 +16,7 @@ exports.handler = async (event, context) => {
     try {
 
         const response = axios.post(`${ROOT_URL}/babies`, babyResponse)
-        console.log(reponse)
+        console.log(response)
         // xhr.open('POST', `${ROOT_URL}/babies`)
         // xhr.setRequestHeader('Content-Type', 'application/json')
         // xhr.send(JSON.stringify(form))
