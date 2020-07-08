@@ -129,8 +129,8 @@ const BabyNameForm = () => {
                             <input type="hidden" name="form-name" value="baby" />
                             <Form.Group>
                                 <Form.Label>Name!</Form.Label>
-                                <Form.Control type="text" placeholder="Baby Name" name="baby-name"/>
-                                <Form.Control type="number" hidden name="list-id" value={parseInt(localStorage.getItem('user_id'))}/>
+                                {/* <Form.Control type="text" placeholder="Baby Name" name="baby-name"/>
+                                <Form.Control type="number" hidden name="list-id" value={parseInt(localStorage.getItem('user_id'))}/> */}
                             </Form.Group>
                             <Button variant="primary" type="submit">
                                 Make Baby!
