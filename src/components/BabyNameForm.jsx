@@ -85,6 +85,12 @@ const BabyNameForm = () => {
         element.scrollTop = element.scrollHeight
     }
 
+    const handleSubmit = async () => {
+        const functionResponse = await get('https://baby-maker-2000.netlify.app/.netlify/functions/retrieve-submission-data')
+        const functionData = functionResponse.json()
+        console.log(functionData)
+    }
+
 
     return(
         <Container style={{ margin: '10px'}}>
@@ -94,7 +100,7 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <Form name="baby" data-netlify="true" method="post">
+                        <Form name="baby" data-netlify="true" method="post" onSubmit={handleSubmit}>
                             <input type="hidden" name="form-name" value="baby" />
                             <Form.Group>
                                 <Form.Label>Name!</Form.Label>

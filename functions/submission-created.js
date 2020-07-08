@@ -1,7 +1,4 @@
 const axios = require("axios")
-const { useDispatch, useSelector } = require('react-redux')
-const { addBaby } = require('../src/redux/action/baby-actions')
-const { toast } = require('react-toastify')
 const { Pool } = require('pg')
 const ROOT_URL = 'https://baby-maker-2000-api.herokapp.com'
 // const ROOT_URL = 'http://localhost:3001'
@@ -14,7 +11,6 @@ const pool = new Pool({
 })
 
 exports.handler = (event, context) => {
-    const dispatch = useDispatch()
     const form = JSON.parse(event.body)
     let babyRequest = [parseInt(form.payload.data['list-id']), form.payload.data['baby-name']]
     let babyResponse;
@@ -25,13 +21,10 @@ exports.handler = (event, context) => {
                 done()
                 if(error) console.log(error.stack)
                 else {
-                    console.log(response)
                     babyResponse = response
                 }
             })
         })
-
-        console.log(babyResponse)
 
         return{
             statusCode: 200,
