@@ -23,14 +23,12 @@ exports.handler = (event, context) => {
     let babyResponse;
     try {
         console.log(babyRequest)
-        client.query("SELECT * FROM babies", (error, response) => {
-            if(error) throw error;
-            for(let row of response.rows){
-                console.log(JSON.stringify(row))
-            }
-            console.log('ending client connection')
-            client.end();
-        })
+        client
+            .query('SELECT * FROM BABIES')
+            .then(response => console.log(response))
+            .catch(error => console.error(error.stack))
+        console.log('ending client connection')
+        client.end()
         // axios.post(`${ROOT_URL}/babies`, babyRequest)
         //     .then(function(response ){
         //         console.log(response)
