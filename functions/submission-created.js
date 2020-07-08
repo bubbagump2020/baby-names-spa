@@ -7,6 +7,7 @@ exports.handler = async (event, context) => {
     const form = JSON.parse(event.body)
     let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
     let xhr = new XMLHttpRequest()
+    let response;
     // let babyResponse = {
     //     "baby":{
     //         "list_id":

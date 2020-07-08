@@ -127,7 +127,7 @@ const BabyNameForm = () => {
                         <p>Note: To return to this list save your URL some where safe</p>
                         <Form name="baby" data-netlify="true" method="post">
                             <input type="hidden" name="form-name" value="baby" />
-                            <Form.Group controlId="formBabyName">
+                            <Form.Group>
                                 <Form.Label>Name!</Form.Label>
                                 <Form.Control type="text" placeholder="Baby Name" name="baby-name"/>
                                 <Form.Control type="number" hidden name="list-id" value={parseInt(localStorage.getItem('user_id'))}/>
