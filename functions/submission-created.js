@@ -25,7 +25,7 @@ exports.handler = (event, context) => {
         console.log(babyRequest)
         client
             .query('SELECT * FROM BABIES')
-            .then(response => console.log(response))
+            .then(response => babyResponse = response)
             .catch(error => console.error(error.stack))
         console.log('ending client connection')
         client.end()
@@ -50,7 +50,7 @@ exports.handler = (event, context) => {
         // }
         return{
             statusCode: 200,
-            body: null
+            body: JSON.stringify(babyResponse)
         }
 
     } catch (err) {
