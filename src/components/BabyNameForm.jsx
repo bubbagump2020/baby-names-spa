@@ -123,7 +123,7 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <Form onSubmit={handleSubmit} name="baby">
+                        <Form onSubmit={handleSubmit} name="baby" netlify>
                             <Form.Group controlId="formBabyName">
                                 <Form.Label>Name!</Form.Label>
                                 <Form.Control type="text" placeholder="Baby Name" />

@@ -4,9 +4,10 @@ const ROOT_URL = 'https://baby-maker-2000-api.herokapp.com'
 
 exports.handler = async (event, context) => {
     const form = JSON.parse(event.body)
+    console.log(event)
     try {
         const response = await axios.post(`${ROOT_URL}/babies`, form)
-        console.log(response)
+        // console.log(response)
         return {
             statusCode: 200,
             body: JSON.stringify(response.data)
