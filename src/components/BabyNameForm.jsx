@@ -86,35 +86,35 @@ const BabyNameForm = () => {
         element.scrollTop = element.scrollHeight
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        const baby_name = document.getElementById("formBabyName").value
-        const babyRequest = {
-            "baby": {
-                "list_id": parseInt(localStorage.getItem("user_id")),
-                "baby_name": baby_name.toLowerCase().trim()
-            }
-        }
-        try{
-            // const response = await post("http://localhost:8888/.netlify/functions/new-baby", babyRequest)
-            const response = await post('https://baby-maker-2000.netlify.app/.netlify/functions/new-baby', babyRequest)
-            if(response.data.baby){
-                console.log(response)
-                dispatch(addBaby(response.data.baby))
-            }
-            if(response.data.messages){
-                let messages = response.data.messages
-                messages.map(message => {
-                    toast.error(message,{
-                        position: "top-center",
-                        hideProgressBar: true,
-                    })
-                })
-            }
-        } catch(err){
-           console.log(err)
-        }
-    }
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault()
+    //     const baby_name = document.getElementById("formBabyName").value
+    //     const babyRequest = {
+    //         "baby": {
+    //             "list_id": parseInt(localStorage.getItem("user_id")),
+    //             "baby_name": baby_name.toLowerCase().trim()
+    //         }
+    //     }
+    //     try{
+    //         // const response = await post("http://localhost:8888/.netlify/functions/new-baby", babyRequest)
+    //         const response = await post('https://baby-maker-2000.netlify.app/.netlify/functions/new-baby', babyRequest)
+    //         if(response.data.baby){
+    //             console.log(response)
+    //             dispatch(addBaby(response.data.baby))
+    //         }
+    //         if(response.data.messages){
+    //             let messages = response.data.messages
+    //             messages.map(message => {
+    //                 toast.error(message,{
+    //                     position: "top-center",
+    //                     hideProgressBar: true,
+    //                 })
+    //             })
+    //         }
+    //     } catch(err){
+    //        console.log(err)
+    //     }
+    // }
 
     return(
         <Container style={{ margin: '10px'}}>
@@ -124,7 +124,7 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <Form onSubmit={handleSubmit} name="baby" data-netlify="true">
+                        <Form name="baby" data-netlify="true" method="post">
                             <input type="hidden" name="form-name" value="baby" />
                             <Form.Group controlId="formBabyName">
                                 <Form.Label>Name!</Form.Label>
