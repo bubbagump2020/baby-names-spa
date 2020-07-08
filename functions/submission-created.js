@@ -1,5 +1,5 @@
 const axios = require("axios")
-const { Client } = require('pg')
+const { Pool, Client } = require('pg')
 const ROOT_URL = 'https://baby-maker-2000-api.herokapp.com'
 // const ROOT_URL = 'http://localhost:3001'
 const query = 'INSERT INTO babies(list_id, baby_name) VALUES($1, $2) RETURNING'
@@ -23,12 +23,14 @@ exports.handler = (event, context) => {
     let babyResponse;
     try {
         console.log(babyRequest)
-        client
-            .query('SELECT * FROM BABIES')
-            .then(response => babyResponse = response)
-            .catch(error => console.error(error.stack))
+        client.query("SELECT * FROM babies", (error, response) => {
+            console.log(error)
+            console.log(response)
+            console.log('ending client connection')
+            client.end()
+        })
         console.log('ending client connection')
-        client.end()
+        // client.end()
         // axios.post(`${ROOT_URL}/babies`, babyRequest)
         //     .then(function(response ){
         //         console.log(response)
