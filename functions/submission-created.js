@@ -4,7 +4,7 @@ const ROOT_URL = 'https://baby-maker-2000-api.herokapp.com'
 
 exports.handler = async (event, context) => {
     console.log(event.body)
-    const form = JSON.parse(event.body.payload)
+    const form = JSON.parse(event.body)
     console.log(form)
     let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
     let xhr = new XMLHttpRequest()
