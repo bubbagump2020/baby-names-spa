@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector} from 'react-redux'
-import { get, post, patch } from 'axios'
+import { get, axios, patch } from 'axios'
 import { getBabies, enableBaby, disableBaby, addBaby } from '../redux/actions/baby-actions'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -97,7 +97,7 @@ const BabyNameForm = () => {
         }
         try{
             // const response = await post("http://localhost:8888/.netlify/functions/new-baby", babyRequest)
-            const response = await post('https://baby-maker-2000.netlify.app/.netlify/functions/new-baby', babyRequest)
+            const response = await axios.post('https://baby-maker-2000.netlify.app/.netlify/functions/new-baby', babyRequest)
             if(response.data.baby){
                 dispatch(addBaby(response.data.baby))
             }
