@@ -27,11 +27,13 @@ exports.handler = (event, context) => {
         //     console.log(response)
         //     client.end()
         // })
-        pool.query("SELECT * FROM babies", (error, response) => {
-            if(error){
-                throw error
-            }
-            babyResponse = response
+        pool.connect((error, client, done) => {
+            if(error) throw error
+            client.query("SELECT * FROM babies", (error, response) => {
+                done()
+                console.log(error)
+                console.log(response)     
+            })
         })
 
         console.log(babyResponse)
