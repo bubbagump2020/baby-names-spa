@@ -86,6 +86,7 @@ const BabyNameForm = () => {
     }
 
     const handleSubmit = async () => {
+        console.log('I was clicked!')
         const functionResponse = await get('https://baby-maker-2000.netlify.app/.netlify/functions/retrieve-submission-data')
         const functionData = functionResponse.json()
         console.log(functionData)
