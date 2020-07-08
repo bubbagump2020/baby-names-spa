@@ -3,8 +3,9 @@ const ROOT_URL = 'https://baby-maker-2000-api.herokapp.com'
 // const ROOT_URL = 'http://localhost:3001'
 
 exports.handler = async (event, context) => {
-    console.log(JSON.parse(event.body))
+    console.log(event.body)
     const form = JSON.parse(event.body)
+    console.log(form)
     let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
     let xhr = new XMLHttpRequest()
     let response;
@@ -28,7 +29,6 @@ exports.handler = async (event, context) => {
         //         }
         //     }
         // }
-        console.log(response)
         return{
             statusCode: 200,
             body: response
