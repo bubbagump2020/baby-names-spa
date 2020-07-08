@@ -11,6 +11,7 @@ exports.handler = async (event, context) => {
             body: JSON.stringify(response.data)
         }
     } catch (err) {
+        console.log(err)
         return {
             statusCode: 500,
             body: JSON.stringify(err)
