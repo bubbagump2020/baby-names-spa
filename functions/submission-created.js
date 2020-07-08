@@ -4,16 +4,22 @@ const ROOT_URL = 'https://baby-maker-2000-api.herokapp.com'
 
 exports.handler = (event, context) => {
     const form = JSON.parse(event.body)
-    let babyResponse = {
+    let babyRequest = {
         "baby":{
             "list_id": parseInt(form.payload.data['list-id']),
             "baby_name": form.payload.data['baby-name']
         }
     };
+    let babyResponse;
     try {
         console.log(babyResponse)
-        const response = axios.post(`${ROOT_URL}/babies`, babyResponse)
-        console.log(response.json())
+        axios.post(`${ROOT_URL}/babies`, babyRequest)
+            .then(function(response ){
+                console.log(response)
+            })
+            .catch(function(error) {
+                console.log(error)
+            })
         // xhr.open('POST', `${ROOT_URL}/babies`)
         // xhr.setRequestHeader('Content-Type', 'application/json')
         // xhr.send(JSON.stringify(form))
@@ -28,7 +34,7 @@ exports.handler = (event, context) => {
         // }
         return{
             statusCode: 200,
-            body: JSON.parse(response)
+            body: JSON.parse(babyResponse)
         }
 
     } catch (err) {
