@@ -9,7 +9,7 @@ const client = new Client({
         rejectUnauthorized: false
     }
 })
-
+console.log('beginning client connection')
 client.connect()
 
 exports.handler = (event, context) => {
@@ -28,6 +28,7 @@ exports.handler = (event, context) => {
             for(let row of response.rows){
                 console.log(JSON.stringify(row))
             }
+            console.log('ending client connection')
             client.end();
         })
         // axios.post(`${ROOT_URL}/babies`, babyRequest)
