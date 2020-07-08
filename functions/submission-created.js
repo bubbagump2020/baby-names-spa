@@ -3,26 +3,30 @@ const ROOT_URL = 'https://baby-maker-2000-api.herokapp.com'
 // const ROOT_URL = 'http://localhost:3001'
 
 exports.handler = async (event, context) => {
-    console.log(event)
+    console.log(event.body.payload.data)
     const form = JSON.parse(event.body)
     let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
     let xhr = new XMLHttpRequest()
-    let response;
+    // let babyResponse = {
+    //     "baby":{
+    //         "list_id":
+    //     }
+    // };
 
     try {
 
-        xhr.open('POST', `${ROOT_URL}/babies`)
-        xhr.setRequestHeader('Content-Type', 'application/json')
-        xhr.send(JSON.stringify(form))
-        xhr.onload = function(e) {
-            if (xhr.readyState === 4){
-                if (xhr.status === 200){
-                    response = JSON.parse(xhr.responseText)
-                } else {
-                    console.log(xhr.statusText)
-                }
-            }
-        }
+        // xhr.open('POST', `${ROOT_URL}/babies`)
+        // xhr.setRequestHeader('Content-Type', 'application/json')
+        // xhr.send(JSON.stringify(form))
+        // xhr.onload = function(e) {
+        //     if (xhr.readyState === 4){
+        //         if (xhr.status === 200){
+        //             response = JSON.parse(xhr.responseText)
+        //         } else {
+        //             console.log(xhr.statusText)
+        //         }
+        //     }
+        // }
         console.log(response)
         return{
             statusCode: 200,
