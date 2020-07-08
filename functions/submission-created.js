@@ -25,7 +25,7 @@ exports.handler = (event, context) => {
             if(error) throw error
             client.query(query, babyRequest, (error, response) => {
                 done()
-                if(error) console.log(err.stack)
+                if(error) console.log(error.stack)
                 else babyResponse = response  
             })
         })
