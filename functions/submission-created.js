@@ -2,7 +2,7 @@ const axios = require("axios")
 const ROOT_URL = 'https://baby-maker-2000-api.herokapp.com'
 // const ROOT_URL = 'http://localhost:3001'
 
-exports.handler = async (event, context) => {
+exports.handler = (event, context) => {
     const form = JSON.parse(event.body)
     let babyResponse = {
         "baby":{
@@ -10,12 +10,9 @@ exports.handler = async (event, context) => {
             "baby_name": form.payload.data['baby-name']
         }
     };
-
-    // console.log(babyResponse)
-
     try {
-
-        const response = await axios.post(`${ROOT_URL}/babies`, babyResponse)
+        console.log(babyResponse)
+        const response = axios.post(`${ROOT_URL}/babies`, babyResponse)
         console.log(response)
         // xhr.open('POST', `${ROOT_URL}/babies`)
         // xhr.setRequestHeader('Content-Type', 'application/json')
