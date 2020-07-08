@@ -6,6 +6,7 @@ exports.handler = async (event, context) => {
     const form = JSON.parse(event.body)
     try {
         const response = await axios.post(`${ROOT_URL}/babies`, form)
+        console.log(reponse)
         return {
             statusCode: 200,
             body: JSON.stringify(response.data)
