@@ -18,6 +18,7 @@ const SplashPage = () => {
                     list_id = response.data.list.id
                     localStorage.setItem('user_id', list_id)
                     unique_id = response.data.list.unique_id;
+                    localStorage.setItem('unique_id', unique_id)
                     history.push(`/lists/${unique_id}`);
                 }
             } catch (err) {

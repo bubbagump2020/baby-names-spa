@@ -3,6 +3,7 @@ const ROOT_URL = 'https://baby-maker-2000-api.herokapp.com'
 // const ROOT_URL = 'http://localhost:3001'
 
 exports.handler = async (event, context) => {
+    console.log(event)
     const form = JSON.parse(event.body)
     let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
     let xhr = new XMLHttpRequest()
