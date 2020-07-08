@@ -23,7 +23,7 @@ exports.handler = (event, context) => {
     try {
         pool.connect((error, client, done) => {
             if(error) throw error
-            client.query(text, babyRequest, (error, response) => {
+            client.query(query, babyRequest, (error, response) => {
                 done()
                 if(error) console.log(err.stack)
                 else babyResponse = response  
