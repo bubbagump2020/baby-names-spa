@@ -9,30 +9,24 @@ const pool = new Pool({
         rejectUnauthorized: false
     }
 })
-// client.connect()
 
 exports.handler = (event, context) => {
     const form = JSON.parse(event.body)
-    let babyRequest = {
-        "baby":{
-            "list_id": parseInt(form.payload.data['list-id']),
-            "baby_name": form.payload.data['baby-name']
-        }
-    };
+    let babyRequest = [parseInt(form.payload.data['list-id']), form.payload.data['baby-name']]
+    // let babyRequest = {
+    //     "baby":{
+    //         "list_id": parseInt(form.payload.data['list-id']),
+    //         "baby_name": form.payload.data['baby-name']
+    //     }
+    // };
     let babyResponse;
     try {
-        // Working Client Query
-        // client.query("SELECT * FROM babies", (error, response) => {
-        //     console.log(error)
-        //     console.log(response)
-        //     client.end()
-        // })
         pool.connect((error, client, done) => {
             if(error) throw error
-            client.query("SELECT * FROM babies", (error, response) => {
+            client.query(text, babyRequest, (error, response) => {
                 done()
-                console.log(error)
-                console.log(response)     
+                if(error) console.log(err.stack)
+                else babyResponse = response  
             })
         })
 
