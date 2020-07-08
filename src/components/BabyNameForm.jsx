@@ -128,7 +128,7 @@ const BabyNameForm = () => {
                             <input type="hidden" name="form-name" value="baby" />
                             <Form.Group controlId="formBabyName">
                                 <Form.Label>Name!</Form.Label>
-                                <Form.Control type="text" placeholder="Baby Name" />
+                                <Form.Control type="text" placeholder="Baby Name" name="baby-name"/>
                             </Form.Group>
                             <Button variant="primary" type="submit">
                                 Make Baby!
