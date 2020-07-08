@@ -5,6 +5,7 @@ const ROOT_URL = 'https://baby-maker-2000-api.herokuapp.com'
 exports.handler = async (event, context) => {
     try{
         const response = await axios.get(`${ROOT_URL}/babies`)
+        console.log(response)
         return{
             statusCode: 200,
             body: JSON.stringify(response.data)
