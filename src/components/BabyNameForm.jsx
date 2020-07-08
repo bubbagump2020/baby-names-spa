@@ -10,47 +10,34 @@ import Jumbotron from 'react-bootstrap/Jumbotron'
 import Button from 'react-bootstrap/Button'
 import { toast } from 'react-toastify';
 
-const BabyNameForm = (props) => {
+const BabyNameForm = () => {
 
     const dispatch = useDispatch();
     const { babiesList } = useSelector(state => ({ babiesList: state.babiesList }))
 
     React.useEffect(() => {
         const gettingBabies = async () => {
-           let response = null;
+
            let babies = [];
            try {
-               response = await get('http://localhost:3001/babies')
-               if (response.status === 200){
-                    babies = response.data
-                    dispatch(getBabies(babies))
-               }
-           } catch{
-                // Heavy duty error catching if needed
+                // const response = await get("http://localhost:8888/.netlify/functions/babies-index")
+                const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
+                if (response.status === 200){
+                        babies = response.data
+                        dispatch(getBabies(babies))
+                }
+           } catch (err){
+                console.log(err)
            }
 
         }
-
-        // necessary due to usage of redux-persist 
-        const updatingUser = async () => {
-            let response = null;
-            try {
-                response = await get(`http://localhost:3001/${props.match.url}`)
-                if (response.status === 200){
-                    localStorage.setItem('user_id', response.data.list.id)
-                }
-            } catch {
-                // Heavy duty error catching if needed
-            }
-        }
         gettingBabies();
-        updatingUser();
     }, [])
 
     const showBabies = () => {
-        let user = localStorage.getItem('user_id')
+        let user = parseInt(localStorage.getItem("user_id"))
         return babiesList.babies.map(baby => {
-            if (parseInt(user) === baby.list_id){
+            if (user === baby.list_id){
                 return(
                     <div key={baby.id} style={{cursor: "pointer"}}>
                         <li><br></br>
@@ -80,15 +67,17 @@ const BabyNameForm = (props) => {
             thisBaby.enabled = true
             dispatch(enableBaby(thisBaby.id))
         }
-        let request = {
+        let babyRequest = {
             "baby": {
+                "id": thisBaby.id,
                 "enabled": thisBaby.enabled
             }
         }
         try{
-            await patch(`http://localhost:3001/babies/${thisBaby.id}`, request)
-        } catch{
-
+            // await patch(`http://localhost:8888/.netlify/functions/update-baby`, babyRequest)
+            await patch("https://baby-maker-2000.netlify.app/.netlify/functions/update-baby", babyRequest)
+        } catch (err) {
+            console.log(err)
         }
     }
 
@@ -99,21 +88,21 @@ const BabyNameForm = (props) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const babyName = document.getElementById('formBabyName').value
-        const request = {
+        const baby_name = document.getElementById("formBabyName").value
+        const babyRequest = {
             "baby": {
-                list_id: localStorage.getItem('user_id'),
-                baby_name: babyName.toLowerCase().trim()
+                "list_id": parseInt(localStorage.getItem("user_id")),
+                "baby_name": baby_name.toLowerCase().trim()
             }
         }
-        let response = null
         try{
-            response = await post('http://localhost:3001/babies', request)
+            // const response = await post("http://localhost:8888/.netlify/functions/new-baby", babyRequest)
+            const response = await post('https://baby-maker-2000.netlify.app/.netlify/functions/new-baby', babyRequest)
             if(response.data.baby){
                 dispatch(addBaby(response.data.baby))
             }
             if(response.data.messages){
-                let messages = response.data.messages.length
+                let messages = response.data.messages
                 messages.map(message => {
                     toast.error(message,{
                         position: "top-center",
@@ -122,7 +111,7 @@ const BabyNameForm = (props) => {
                 })
             }
         } catch(err){
-            // Heavy duty error catching if needed
+           console.log(err)
         }
     }
 
@@ -134,7 +123,7 @@ const BabyNameForm = (props) => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} name="baby">
                             <Form.Group controlId="formBabyName">
                                 <Form.Label>Name!</Form.Label>
                                 <Form.Control type="text" placeholder="Baby Name" />
