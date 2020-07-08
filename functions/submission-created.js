@@ -12,7 +12,7 @@ exports.handler = (event, context) => {
     };
     let babyResponse;
     try {
-        console.log(babyResponse)
+        console.log(babyRequest)
         axios.post(`${ROOT_URL}/babies`, babyRequest)
             .then(function(response ){
                 console.log(response)
@@ -34,7 +34,7 @@ exports.handler = (event, context) => {
         // }
         return{
             statusCode: 200,
-            body: JSON.parse(babyResponse)
+            body: null
         }
 
     } catch (err) {
