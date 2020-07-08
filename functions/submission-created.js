@@ -7,7 +7,7 @@ exports.handler = async (event, context) => {
     let babyResponse = {
         "baby":{
             "list_id": parseInt(form.payload.data['list-id']),
-            "baby_name": form.bayload.data['baby-name']
+            "baby_name": form.payload.data['baby-name']
         }
     };
 
