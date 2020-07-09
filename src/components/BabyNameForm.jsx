@@ -101,7 +101,7 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <Form name="baby" data-netlify="true" method="post" onSubmit={handleSubmit} action="public/success">
+                        <Form name="baby" data-netlify="true" method="post" onSubmit={handleSubmit} action={`/${localStorage.getItem('unique_id')}`}>
                             <input type="hidden" name="form-name" value="baby" />
                             <Form.Group>
                                 <Form.Label>Name!</Form.Label>
