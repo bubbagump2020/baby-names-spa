@@ -8,11 +8,22 @@ import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Button from 'react-bootstrap/Button'
+import { toast } from 'react-toastify';
+
+const encode = (data) => {
+    return Object.keys(data)
+        .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+        .join("&")
+}
 
 const BabyNameForm = () => {
 
     const dispatch = useDispatch();
-    const { babiesList } = useSelector(state => ({ babiesList: state.babiesList }))
+    const { babiesList } = useSelector(state => ({ babiesList: state.babiesList.babies }))
+    const [ baby, setBaby] = React.useState({ 
+        list_id: parseInt(localStorage.getItem('user_id')),
+        baby_name: ""
+    })
 
     React.useEffect(() => {
         const gettingBabies = async () => {
@@ -34,28 +45,30 @@ const BabyNameForm = () => {
     }, [])
 
     const showBabies = () => {
-        let user = parseInt(localStorage.getItem("user_id"))
-        return babiesList.babies.map(baby => {
-            if (user === baby.list_id){
-                return(
-                    <div key={baby.id} style={{cursor: "pointer"}}>
-                        <li><br></br>
-                            <p onClick={handleClick} id={baby.id} style={{textDecorationLine: baby.enabled ? "none" : "line-through",}}>
-                                {baby.baby_name}
-                            </p>
-                        </li>
-                    </div>
-                )
-            }
+        return babiesList.map(baby => {
+            return(
+                <div key={baby.id} style={{cursor: "pointer"}}>
+                    <li ><br></br>
+                        <p onClick={handleClick} id={baby.id} style={{textDecorationLine: baby.enabled ? "none" : "line-through",}}>
+                            {baby.baby_name}
+                        </p>
+                    </li>
+                </div>
+            )
         })
+    }
+
+    const handleChange = (e) => {
+        e.preventDefault()
+        setBaby({ ...baby, baby_name: e.target.value })
     }
 
     const handleClick = async (e) => {
         e.preventDefault()
         let thisBaby = {}
-        let babies = babiesList.babies
+        let babies = babiesList
         for(let i = 0; i < babies.length; i++){
-            if(parseInt(e.target.id) === babies[i].id){
+            if(e.target.id === babies[i].id){
                 thisBaby = babies[i]
             }
         }
@@ -85,13 +98,28 @@ const BabyNameForm = () => {
         element.scrollTop = element.scrollHeight
     }
 
-    const handleSubmit = async () => {
-        console.log('I was clicked!')
-        const functionResponse = await get('https://baby-maker-2000.netlify.app/.netlify/functions/retrieve-submission-data')
-        const functionData = functionResponse.json()
-        console.log(functionData)
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: encode({"form-name": "baby", ...baby})
+        })
+            .then(response => response.json())
+            .then(data =>{
+                if(data.message){
+                    toast.error(data.message, {
+                        position: "top-center",
+                        progress: undefined,
+                        closeOnClick: true,
+                        hideProgressBar: true,
+                    })
+                } else {
+                    dispatch(getBabies(data))
+                }
+            })
+            .catch(error => console.log(error))
     }
-
 
     return(
         <Container style={{ margin: '10px'}}>
@@ -101,12 +129,10 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <Form name="baby" data-netlify="true" method="post" onSubmit={handleSubmit} action="/public/success">
-                            <input type="hidden" name="form-name" value="baby" />
+                        <Form onSubmit={handleSubmit}>
                             <Form.Group>
                                 <Form.Label>Name!</Form.Label>
-                                <Form.Control type="text" placeholder="Baby Name" name="baby-name"/>
-                                <Form.Control type="number" hidden name="list-id" value={parseInt(localStorage.getItem('user_id'))}/>
+                                <Form.Control type="text" placeholder="Baby Name" name="baby-name" onChange={e => handleChange(e)}/>
                             </Form.Group>
                             <Button variant="primary" type="submit">
                                 Make Baby!

@@ -3,10 +3,15 @@ const ROOT_URL = 'https://baby-maker-2000-api.herokuapp.com'
 // const ROOT_URL = 'http://localhost:3001'
 
 exports.handler = async(event, context) => {
-   const form = JSON.parse(event.body)
-   const baby_id = form.baby.id
+    const babyInfo = JSON.parse(event.body)
+    const baby = {
+        "baby": {
+            enabled: babyInfo.baby.enabled
+        }
+    }
    try{
-        const response = await axios.patch(`${ROOT_URL}/babies/${baby_id}`, form)
+        const response = await axios.patch(`${ROOT_URL}/babies/${babyInfo.baby.id}`, baby)
+        const data = await response
         return {
             statusCode: 200,
             body: JSON.stringify(response.data)
