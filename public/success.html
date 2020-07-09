@@ -6,9 +6,11 @@
     </head>
     <body>
         <script>
-            const unique_id = localStorage.getItem('unique_id')
-            console.log(unique_id)
-            window.location = `https://baby-maker-2000.netlify.app/lists/${unique_id}`
+            const redirectFunc = () => {
+                const unique_id = localStorage.getItem('unique_id')
+                window.location = `https://baby-maker-2000.netlify.app/lists/${unique_id}`
+            }
+            redirectFunc()
         </script>
     </body>
 </html>
