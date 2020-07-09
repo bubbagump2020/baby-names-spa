@@ -8,4 +8,3 @@
     from = "/"
     to = "/index.html"
     status = true
-    force = true
