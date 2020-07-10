@@ -1,7 +1,7 @@
 import React from 'react';
-import { useDispatch } from 'react-redux'
-import { get } from 'axios'
-import { getBabies } from '../redux/actions/baby-actions'
+import { useDispatch,useSelector } from 'react-redux'
+import { get, patch } from 'axios'
+import { getBabies, disableBaby, enableBaby } from '../redux/actions/baby-actions'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -19,9 +19,9 @@ const encode = (data) => {
 const BabyNameForm = () => {
 
     const dispatch = useDispatch();
-    // const { babiesList } = useSelector(state => ({ babiesList: state.babiesList.babies }))
+    const { babiesList } = useSelector(state => ({ babiesList: state.babiesList.babies }))
     const [ baby, setBaby] = React.useState({ 
-        "list-id": parseInt(localStorage.getItem('user_id')),
+        "list-id": parseInt(localStorage.getItem('list_id')),
         "baby-name": ""
     })
 
@@ -30,7 +30,6 @@ const BabyNameForm = () => {
 
            let babies = [];
            try {
-                // const response = await get("http://localhost:8888/.netlify/functions/babies-index")
                 const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
                 if (response.status === 200){
                         babies = response.data
@@ -44,19 +43,19 @@ const BabyNameForm = () => {
         gettingBabies();
     }, [dispatch])
 
-    // const showBabies = () => {
-    //     return babiesList.map(baby => {
-    //         return(
-    //             <div key={baby.id} style={{cursor: "pointer"}}>
-    //                 <li ><br></br>
-    //                     <p onClick={handleClick} id={baby.id} style={{textDecorationLine: baby.enabled ? "none" : "line-through",}}>
-    //                         {baby.baby_name}
-    //                     </p>
-    //                 </li>
-    //             </div>
-    //         )
-    //     })
-    // }
+    const showBabies = () => {
+        return babiesList.map(baby => {
+            return(
+                <div key={baby.id} style={{cursor: "pointer"}}>
+                    <li ><br></br>
+                        <p onClick={handleClick} id={baby.id} style={{textDecorationLine: baby.enabled ? "none" : "line-through",}}>
+                            {baby.baby_name}
+                        </p>
+                    </li>
+                </div>
+            )
+        })
+    }
 
     const handleChange = (e) => {
         e.preventDefault()
@@ -65,35 +64,35 @@ const BabyNameForm = () => {
         setBaby({ ...baby, "baby-name": value })
     }
 
-    // const handleClick = async (e) => {
-    //     e.preventDefault()
-    //     let thisBaby = {}
-    //     let babies = babiesList
-    //     for(let i = 0; i < babies.length; i++){
-    //         if(e.target.id === babies[i].id){
-    //             thisBaby = babies[i]
-    //         }
-    //     }
-    //     if (thisBaby.enabled){
-    //         thisBaby.enabled = false
-    //         dispatch(disableBaby(thisBaby.id))
-    //     } else {
-    //         thisBaby.enabled = true
-    //         dispatch(enableBaby(thisBaby.id))
-    //     }
-    //     let babyRequest = {
-    //         "baby": {
-    //             "id": thisBaby.id,
-    //             "enabled": thisBaby.enabled
-    //         }
-    //     }
-    //     try{
-    //         // await patch(`http://localhost:8888/.netlify/functions/update-baby`, babyRequest)
-    //         await patch("https://baby-maker-2000.netlify.app/.netlify/functions/update-baby", babyRequest)
-    //     } catch (err) {
-    //         console.log(err)
-    //     }
-    // }
+    const handleClick = async (e) => {
+        e.preventDefault()
+        let thisBaby = {}
+        let babies = babiesList
+        for(let i = 0; i < babies.length; i++){
+            if(e.target.id === babies[i].id){
+                thisBaby = babies[i]
+            }
+        }
+        if (thisBaby.enabled){
+            thisBaby.enabled = false
+            dispatch(disableBaby(thisBaby.id))
+        } else {
+            thisBaby.enabled = true
+            dispatch(enableBaby(thisBaby.id))
+        }
+        let babyRequest = {
+            "baby": {
+                "id": thisBaby.id,
+                "enabled": thisBaby.enabled
+            }
+        }
+        try{
+            await patch('https://baby-maker-2000.netlify.app/.netlify/functions/update-baby', babyRequest)
+            console.log(thisBaby)
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     window.onload=function() {
         let element = document.getElementById("name-list")
@@ -101,13 +100,11 @@ const BabyNameForm = () => {
     }
 
     const handleSubmit = (e) => {
-        
         fetch("/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-
             body: encode({"form-name": "baby", ...baby})
         })
             .then(response => response.json())
@@ -127,8 +124,6 @@ const BabyNameForm = () => {
         e.preventDefault()
     }
 
-    console.log(document.getElementById('name-input'))
-
     return(
         <Container style={{ margin: '10px'}}>
             <Row>
@@ -142,7 +137,7 @@ const BabyNameForm = () => {
                             <div>
                                 <label>Name! </label>
                                 <div>
-                                    <input id="name-input" placeholder="Baby Name!" type="text" name="baby-name" value={baby["baby-name"]} onChange={handleChange} />
+                                    <input required id="name-input" placeholder="Baby Name!" type="text" name="baby-name" value={baby["baby-name"]} onChange={handleChange} />
                                     <input hidden="true" type="number" name="list-id" value={baby.list_id} />
                                 </div>
                             </div><br></br>
@@ -155,7 +150,7 @@ const BabyNameForm = () => {
                 <Col style={{fontSize: "24px", textAlign: "center"}}>
                     <h1>Baby Names!</h1>
                     <ul id="name-list" style={{listStyle: "none", overflowAnchor: "bottom", overflow: "scroll", height: "50vh"}}>
-                        {/* {showBabies()} */}
+                        {showBabies()}
                     </ul>
                 </Col>
             </Row>

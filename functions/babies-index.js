@@ -1,6 +1,3 @@
-const axios = require("axios")
-const ROOT_URL = 'https://baby-maker-2000-api.herokuapp.com'
-// const ROOT_URL = 'http://localhost:3001'
 const { Pool } = require('pg')
 
 const pool = new Pool({
@@ -11,15 +8,25 @@ const pool = new Pool({
 })
 
 exports.handler = async (event, context) => {
-    const url = event.headers.referer
-    const pathname = new URL(url).pathname    
+
+    const path = event.headers.referer.split('/').pop()
+    let searchResponse = null
+    let listResponse = null
+ 
     try{
-        let searchResponse;
-        const listResponse = await axios.get(`${ROOT_URL + pathname}`)
-        const searchQuery = `SELECT id, baby_name, enabled FROM babies WHERE list_id=${listResponse.data.list.id}`
+        const listQuery = `SELECT id FROM lists WHERE unique_id='${path}'`;
+        const listClient = await pool.connect()
+        try {
+            listResponse = await listClient.query(listQuery)
+            listResponse = parseInt(listResponse.rows[0].id)
+        } finally {
+            listClient.release()
+        }
+        const searchQuery = `SELECT id, baby_name, enabled FROM babies WHERE list_id=${listResponse}`
         const client = await pool.connect()
         try{
             searchResponse = await client.query(searchQuery)
+ 
         } finally{
             client.release()
         }
