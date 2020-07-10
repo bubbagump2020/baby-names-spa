@@ -27,7 +27,7 @@ const SplashPage = () => {
             }
         }
         makeList();
-    }, []);
+    }, [history]);
 
     return(
         <div>
