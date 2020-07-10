@@ -100,7 +100,7 @@ const BabyNameForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetch("https://baby-maker-2000.netlify.app", {
+        fetch("/", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: encode({"form-name": "baby", ...baby})
