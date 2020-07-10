@@ -18,8 +18,6 @@ const encode = (data) => {
 
 const BabyNameForm = () => {
 
-    const history = useHistory()
-
     const dispatch = useDispatch();
     const { babiesList } = useSelector(state => ({ babiesList: state.babiesList.babies }))
     const [ baby, setBaby] = React.useState({ 
