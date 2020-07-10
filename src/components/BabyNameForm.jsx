@@ -8,6 +8,8 @@ import Col from 'react-bootstrap/Col'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import { toast } from 'react-toastify';
 import './BabyNameForm.css'
+import { useHistory } from 'react-router-dom';
+
 
 const encode = (data) => {
     return Object.keys(data)
@@ -17,6 +19,7 @@ const encode = (data) => {
 
 const BabyNameForm = () => {
 
+    const history = useHistory()
     const dispatch = useDispatch();
     const { babiesList } = useSelector(state => ({ babiesList: state.babiesList.babies }))
     const [ baby, setBaby] = React.useState({ 
@@ -29,8 +32,8 @@ const BabyNameForm = () => {
 
            let babies = [];
            try {
-                // const response = await get("http://localhost:8888/.netlify/functions/babies-index")
-                const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
+                const response = await get("http://localhost:8888/.netlify/functions/babies-index")
+                // const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
                 if (response.status === 200){
                         babies = response.data
                         dispatch(getBabies(babies))
@@ -87,8 +90,8 @@ const BabyNameForm = () => {
             }
         }
         try{
-            // await patch(`http://localhost:8888/.netlify/functions/update-baby`, babyRequest)
-            await patch("https://baby-maker-2000.netlify.app/.netlify/functions/update-baby", babyRequest)
+            await patch(`http://localhost:8888/.netlify/functions/update-baby`, babyRequest)
+            // await patch("https://baby-maker-2000.netlify.app/.netlify/functions/update-baby", babyRequest)
         } catch (err) {
             console.log(err)
         }
@@ -131,7 +134,7 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <form id="form" onSubmit={handleSubmit} action="/" name="baby" method="post" netlify>
+                        <form id="form" onSubmit={handleSubmit} action="/success" name="baby" method="post" netlify>
                             <div>
                                 <label>Name! </label>
                                 <div>

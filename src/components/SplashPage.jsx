@@ -12,8 +12,8 @@ const SplashPage = () => {
         let list_id;
         const makeList = async () => {
             try {
-                // const response = await post("http://localhost:8888/.netlify/functions/new-list")
-                const response = await post("https://baby-maker-2000.netlify.app/.netlify/functions/new-list")
+                const response = await post("http://localhost:8888/.netlify/functions/new-list")
+                // const response = await post("https://baby-maker-2000.netlify.app/.netlify/functions/new-list")
                 if (response.status === 200) {
                     console.log(response)
                     list_id = response.data.list.id
