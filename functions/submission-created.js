@@ -16,6 +16,7 @@ exports.handler = async (event, context) => {
     const pathname = new URL(url).pathname
     
     let form = JSON.parse(event.body).payload.data
+    console.log(form)
     
     let duplicateMessage = null
     let searchResponse;
