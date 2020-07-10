@@ -129,11 +129,12 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} method="post" name="baby">
+                            <input type="hidden" name="form-name" value="bab"/>
                             <Form.Group>
                                 <Form.Label>Name!</Form.Label>
                                 <Form.Control type="text" placeholder="Baby Name" name="baby-name" onChange={e => handleChange(e)}/>
-                                <Form.Control hidden name="list-id" type="number" value={parseInt(localStorage.getItem('user_id'))} />
+                                <input hidden name="list-id" type="number" value={parseInt(localStorage.getItem('user_id'))} />
                             </Form.Group>
                             <Button variant="primary" type="submit">
                                 Make Baby!
