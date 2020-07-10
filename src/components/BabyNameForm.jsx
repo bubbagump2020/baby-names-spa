@@ -21,8 +21,8 @@ const BabyNameForm = () => {
     const dispatch = useDispatch();
     const { babiesList } = useSelector(state => ({ babiesList: state.babiesList.babies }))
     const [ baby, setBaby] = React.useState({ 
-        list_id: parseInt(localStorage.getItem('user_id')),
-        baby_name: ""
+        "list-id": parseInt(localStorage.getItem('user_id')),
+        "baby-name": ""
     })
 
     React.useEffect(() => {
