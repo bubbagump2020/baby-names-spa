@@ -1,7 +1,7 @@
 const axios = require('axios')
 const randomstring = require('randomstring')
-// const ROOT_URL = 'https://baby-maker-2000-api.herokuapp.com'
-const ROOT_URL = 'http://localhost:3001'
+const ROOT_URL = 'https://baby-maker-2000-api.herokuapp.com'
+// const ROOT_URL = 'http://localhost:3001'
 
 exports.handler = async (event, context) => {
     console.log(event)

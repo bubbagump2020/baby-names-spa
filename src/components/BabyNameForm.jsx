@@ -30,8 +30,8 @@ const BabyNameForm = () => {
 
            let babies = [];
            try {
-                const response = await get("http://localhost:8888/.netlify/functions/babies-index")
-                // const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
+                // const response = await get("http://localhost:8888/.netlify/functions/babies-index")
+                const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
                 if (response.status === 200){
                         babies = response.data
                         dispatch(getBabies(babies))
@@ -88,8 +88,8 @@ const BabyNameForm = () => {
             }
         }
         try{
-            await patch(`http://localhost:8888/.netlify/functions/update-baby`, babyRequest)
-            // await patch("https://baby-maker-2000.netlify.app/.netlify/functions/update-baby", babyRequest)
+            // await patch(`http://localhost:8888/.netlify/functions/update-baby`, babyRequest)
+            await patch("https://baby-maker-2000.netlify.app/.netlify/functions/update-baby", babyRequest)
         } catch (err) {
             console.log(err)
         }
