@@ -8,7 +8,6 @@ import Col from 'react-bootstrap/Col'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import { toast } from 'react-toastify';
 import './BabyNameForm.css'
-import { useHistory } from 'react-router-dom';
 
 
 const encode = (data) => {
@@ -19,7 +18,6 @@ const encode = (data) => {
 
 const BabyNameForm = () => {
 
-    const history = useHistory()
     const dispatch = useDispatch();
     const { babiesList } = useSelector(state => ({ babiesList: state.babiesList.babies }))
     const [ baby, setBaby] = React.useState({ 
