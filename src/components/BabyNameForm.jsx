@@ -110,6 +110,7 @@ const BabyNameForm = () => {
                 Promise.resolve(response)
                     .then(response => response.json())
                     .then(data => {
+                        console.log(data)
                         if(data.message){
                             toast.error('That baby already exists!', {
                                 position: "top-center",

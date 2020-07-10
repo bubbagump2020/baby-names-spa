@@ -63,6 +63,8 @@ exports.handler = async (event, context) => {
             searchClient.release()
         }
 
+        console.log(searchResponse)
+
         return{
             statusCode: 200,
             body: JSON.stringify(duplicateMessage ? duplicateMessage : searchResponse.rows)
