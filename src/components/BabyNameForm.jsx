@@ -132,7 +132,7 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <form id="form" onSubmit={handleSubmit} name="baby" method="post">
+                        <form id="form" onSubmit={handleSubmit} netlify netlify-honeypot="bot-field" name="baby" method="post">
                             <input type="hidden" name="form-name" value="baby" />
                             <div>
                                 <label>Name! </label>
