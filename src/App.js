@@ -12,7 +12,7 @@ function App() {
         <Route exact path="/">
           <SplashPage />
         </Route>
-        <Route path="/lists/:list_id" component={BabyNameForm}/>
+        <Route exact path="/lists/:list_id" component={BabyNameForm}/>
         <ToastContainer />
       </div>
   );
