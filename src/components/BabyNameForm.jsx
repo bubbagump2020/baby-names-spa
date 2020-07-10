@@ -133,6 +133,7 @@ const BabyNameForm = () => {
                             <Form.Group>
                                 <Form.Label>Name!</Form.Label>
                                 <Form.Control type="text" placeholder="Baby Name" name="baby-name" onChange={e => handleChange(e)}/>
+                                <input hidden name="list-id" value={parseInt(localStorage.getItem('user_id'))} />
                             </Form.Group>
                             <Button variant="primary" type="submit">
                                 Make Baby!
