@@ -11,54 +11,56 @@ const pool = new Pool({
 })
 
 exports.handler = async (event, context) => {
-    const url = event.headers.referer
-    const pathname = new URL(url).pathname
+    const url = event
+    // const pathname = new URL(url).pathname
+    console.log(url)
     
     let form = JSON.parse(event.body).payload.data
-    console.log(form)
+    // console.log(form)
     
     let duplicateMessage = null
     let searchResponse;
     let duplicateResponse;
-    const listResponse = await axios.get(`${ROOT_URL + pathname}`)
+    // const listResponse = await axios.get(`${ROOT_URL}` + `${pathname}`)
+    // console.log(listResponse.data.list.id)
     try {
-        let babyRequest = [
-            listResponse.data.list.id,
-            form.baby_name
-        ]
-        console.log(listResponse)
-        const duplicateClient = await pool.connect()
-        const duplicateQuery = `SELECT baby_name FROM babies WHERE baby_name='${form.baby_name}' AND list_id=${listResponse.data.list.id}` 
-        try{
-            duplicateResponse = await duplicateClient.query(duplicateQuery)
-        } finally {
-            duplicateClient.release()
-        }
-        if (duplicateResponse.rows.length === 0){
-            const babyClient = await pool.connect()
-            const babyQuery = 'INSERT INTO babies(list_id, baby_name) VALUES($1, $2)'
-            try{
-                await babyClient.query(babyQuery, babyRequest)
-            } finally{
-                babyClient.release()
-            }
-        } else {
-            duplicateMessage = {
-                message: 'That name already exists for this list'
-            }
-        }
+        // let babyRequest = [
+        //     listResponse.data.list.id,
+        //     form.baby_name
+        // ]
+        // console.log(listResponse)
+        // const duplicateClient = await pool.connect()
+        // const duplicateQuery = `SELECT baby_name FROM babies WHERE baby_name='${form.baby_name}' AND list_id=${listResponse.data.list.id}` 
+        // try{
+        //     duplicateResponse = await duplicateClient.query(duplicateQuery)
+        // } finally {
+        //     duplicateClient.release()
+        // }
+        // if (duplicateResponse.rows.length === 0){
+        //     const babyClient = await pool.connect()
+        //     const babyQuery = 'INSERT INTO babies(list_id, baby_name) VALUES($1, $2)'
+        //     try{
+        //         await babyClient.query(babyQuery, babyRequest)
+        //     } finally{
+        //         babyClient.release()
+        //     }
+        // } else {
+        //     duplicateMessage = {
+        //         message: 'That name already exists for this list'
+        //     }
+        // }
 
-        const searchClient = await pool.connect()
-        const searchQuery = `SELECT id, baby_name, enabled FROM babies WHERE list_id=${listResponse.data.list.id}`
-        try{
-            searchResponse = await searchClient.query(searchQuery)
-        } finally{
-            searchClient.release()
-        }
+        // const searchClient = await pool.connect()
+        // const searchQuery = `SELECT id, baby_name, enabled FROM babies WHERE list_id=${listResponse.data.list.id}`
+        // try{
+        //     searchResponse = await searchClient.query(searchQuery)
+        // } finally{
+        //     searchClient.release()
+        // }
 
         return{
             statusCode: 200,
-            body: JSON.stringify(duplicateMessage ? duplicateMessage : searchResponse.rows)         
+            body: "JSON.stringify(duplicateMessage ? duplicateMessage : searchResponse.rows)"         
         }
 
     } catch (err) {

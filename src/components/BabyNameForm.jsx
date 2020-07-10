@@ -44,19 +44,19 @@ const BabyNameForm = () => {
         gettingBabies();
     }, [dispatch])
 
-    const showBabies = () => {
-        return babiesList.map(baby => {
-            return(
-                <div key={baby.id} style={{cursor: "pointer"}}>
-                    <li ><br></br>
-                        <p onClick={handleClick} id={baby.id} style={{textDecorationLine: baby.enabled ? "none" : "line-through",}}>
-                            {baby.baby_name}
-                        </p>
-                    </li>
-                </div>
-            )
-        })
-    }
+    // const showBabies = () => {
+    //     return babiesList.map(baby => {
+    //         return(
+    //             <div key={baby.id} style={{cursor: "pointer"}}>
+    //                 <li ><br></br>
+    //                     <p onClick={handleClick} id={baby.id} style={{textDecorationLine: baby.enabled ? "none" : "line-through",}}>
+    //                         {baby.baby_name}
+    //                     </p>
+    //                 </li>
+    //             </div>
+    //         )
+    //     })
+    // }
 
     const handleChange = (e) => {
         e.preventDefault()
@@ -102,9 +102,12 @@ const BabyNameForm = () => {
 
     const handleSubmit = (e) => {
         
-        fetch("/index.html", {
+        fetch("/", {
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            
             body: encode({"form-name": "baby", ...baby})
         })
             .then(response => response.json())
@@ -152,7 +155,7 @@ const BabyNameForm = () => {
                 <Col style={{fontSize: "24px", textAlign: "center"}}>
                     <h1>Baby Names!</h1>
                     <ul id="name-list" style={{listStyle: "none", overflowAnchor: "bottom", overflow: "scroll", height: "50vh"}}>
-                        {showBabies()}
+                        {/* {showBabies()} */}
                     </ul>
                 </Col>
             </Row>
