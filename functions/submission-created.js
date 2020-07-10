@@ -11,9 +11,9 @@ const pool = new Pool({
 })
 
 exports.handler = async (event, context) => {
-    const url = event
+    const path = JSON.parse(event.body).payload.data.referrer
     // const pathname = new URL(url).pathname
-    console.log(url)
+    console.log(path)
     
     let form = JSON.parse(event.body).payload.data
     // console.log(form)
