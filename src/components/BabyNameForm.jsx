@@ -60,7 +60,6 @@ const BabyNameForm = () => {
     const handleChange = (e) => {
         e.preventDefault()
         const { name, value} = e.target
-        console.log(name, value)
         setBaby({ ...baby, "baby-name": value })
     }
 
@@ -88,7 +87,6 @@ const BabyNameForm = () => {
         }
         try{
             await patch('https://baby-maker-2000.netlify.app/.netlify/functions/update-baby', babyRequest)
-            console.log(thisBaby)
         } catch (err) {
             console.log(err)
         }
@@ -107,18 +105,28 @@ const BabyNameForm = () => {
             },
             body: encode({"form-name": "baby", ...baby})
         })
-            .then(response => response.json())
-            .then(data =>{
-                if(data.message){
-                    toast.error(data.message, {
-                        position: "top-center",
-                        progress: undefined,
-                        closeOnClick: true,
-                        hideProgressBar: true,
+            .then((response) => {
+                alert("Was a baby made? Let's find out!")
+                Promise.resolve(response)
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.message){
+                            toast.error('That baby already exists!', {
+                                position: "top-center",
+                                progress: undefined,
+                                closeOnClick: true,
+                                hideProgressBar: true,
+                            })
+                        } else {
+                            dispatch(getBabies(data))
+                            toast.success('Baby made!', {
+                                position: "top-center",
+                                progress: undefined,
+                                closeOnClick: true,
+                                hideProgressBar: true,
+                            })
+                        }
                     })
-                } else {
-                    dispatch(getBabies(data))
-                }
             })
             .catch(error => console.log(error))
         e.preventDefault()
@@ -132,7 +140,7 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <form id="form" onSubmit={handleSubmit} netlify netlify-honeypot="bot-field" name="baby" method="post">
+                        <form id="form" onSubmit={handleSubmit} netlify netlify-honeypot="bot-fields" name="baby" method="post">
                             <input type="hidden" name="form-name" value="baby" />
                             <div>
                                 <label>Name! </label>

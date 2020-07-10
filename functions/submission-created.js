@@ -43,8 +43,7 @@ exports.handler = async (event, context) => {
             const babyQuery = 'INSERT INTO babies(list_id, baby_name) VALUES($1, $2)'
             
             try{
-                let babyResponse = await babyClient.query(babyQuery, [listResponse, form['baby-name']])
-                console.log(babyResponse)
+                await babyClient.query(babyQuery, [listResponse, form['baby-name']])
             } finally{
                 babyClient.release()
             }
