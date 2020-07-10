@@ -100,7 +100,7 @@ const BabyNameForm = () => {
     }
 
     const handleSubmit = (e) => {
-        fetch("/", {
+        fetch("/index.html", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
