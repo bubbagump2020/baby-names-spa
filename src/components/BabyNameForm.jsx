@@ -42,7 +42,7 @@ const BabyNameForm = () => {
 
         }
         gettingBabies();
-    }, [])
+    })
 
     const showBabies = () => {
         return babiesList.map(baby => {
