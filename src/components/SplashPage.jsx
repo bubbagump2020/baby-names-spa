@@ -15,6 +15,7 @@ const SplashPage = () => {
                 // const response = await post("http://localhost:8888/.netlify/functions/new-list")
                 const response = await post("https://baby-maker-2000.netlify.app/.netlify/functions/new-list")
                 if (response.status === 200) {
+                    console.log(response)
                     list_id = response.data.list.id
                     localStorage.setItem('user_id', list_id)
                     unique_id = response.data.list.unique_id;
@@ -26,7 +27,7 @@ const SplashPage = () => {
             }
         }
         makeList();
-    });
+    }, []);
 
     return(
         <div>

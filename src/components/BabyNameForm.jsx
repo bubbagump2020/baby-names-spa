@@ -23,7 +23,7 @@ const BabyNameForm = () => {
     const [ baby, setBaby] = React.useState({ 
         list_id: parseInt(localStorage.getItem('user_id')),
         baby_name: ""
-    })
+    }, [])
 
     React.useEffect(() => {
         const gettingBabies = async () => {
