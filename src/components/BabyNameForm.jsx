@@ -5,10 +5,9 @@ import { getBabies, enableBaby, disableBaby } from '../redux/actions/baby-action
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Form from 'react-bootstrap/Form'
 import Jumbotron from 'react-bootstrap/Jumbotron'
-import Button from 'react-bootstrap/Button'
 import { toast } from 'react-toastify';
+import './BabyNameForm.css'
 
 const encode = (data) => {
     return Object.keys(data)
@@ -60,7 +59,9 @@ const BabyNameForm = () => {
 
     const handleChange = (e) => {
         e.preventDefault()
-        setBaby({ ...baby, baby_name: e.target.value })
+        const { name, value} = e.target
+        console.log(name, value)
+        setBaby({ ...baby, baby_name: value })
     }
 
     const handleClick = async (e) => {
@@ -129,17 +130,17 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <Form onSubmit={handleSubmit} name="baby" data-netlify="true" method="POST" netlify>
-                            <input type="hidden" name="form-name" value="baby" />
-                            <Form.Group>
-                                <Form.Label>Name!</Form.Label>
-                                <Form.Control type="text" placeholder="Baby Name" name="baby-name" onChange={e => handleChange(e)}/>
-                                <input hidden name="list-id" type="number" value={parseInt(localStorage.getItem('user_id'))} />
-                            </Form.Group>
-                            <Button variant="primary" type="submit">
-                                Make Baby!
-                            </Button>
-                        </Form>
+                        <form id="form" onSubmit={handleSubmit}>
+                            <div>
+                                <label>Name! </label>
+                                <div>
+                                    <input id="name-input" placeholder="Baby Name!" type="text" name="baby-name" value={baby.baby_name} onChange={handleChange} />
+                                </div>
+                            </div><br></br>
+                            <div>
+                                <button type="submit" id="submit-button">Make baby!</button>
+                            </div>
+                        </form>
                     </Jumbotron>
                 </Col>
                 <Col style={{fontSize: "24px", textAlign: "center"}}>

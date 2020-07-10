@@ -10,7 +10,6 @@ const pool = new Pool({
     }
 })
 
-
 exports.handler = async (event, context) => {
     const url = event.headers.referer
     const pathname = new URL(url).pathname
@@ -27,8 +26,9 @@ exports.handler = async (event, context) => {
             listResponse.data.list.id,
             form.baby_name
         ]
+        console.log(listResponse)
         const duplicateClient = await pool.connect()
-        const duplicateQuery = `SELECT baby_name FROM babies WHERE EXISTS(SELECT baby_name FROM babies WHERE baby_name='${form.baby_name}')` 
+        const duplicateQuery = `SELECT baby_name FROM babies WHERE baby_name='${form.baby_name}' AND list_id=${listResponse.data.list.id}` 
         try{
             duplicateResponse = await duplicateClient.query(duplicateQuery)
         } finally {
@@ -44,7 +44,7 @@ exports.handler = async (event, context) => {
             }
         } else {
             duplicateMessage = {
-                message: 'That name already exists for this table'
+                message: 'That name already exists for this list'
             }
         }
 
@@ -55,8 +55,6 @@ exports.handler = async (event, context) => {
         } finally{
             searchClient.release()
         }
-
-        
 
         return{
             statusCode: 200,
