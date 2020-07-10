@@ -19,7 +19,7 @@ const encode = (data) => {
 const BabyNameForm = () => {
 
     const dispatch = useDispatch();
-    const { babiesList } = useSelector(state => ({ babiesList: state.babiesList.babies }))
+    // const { babiesList } = useSelector(state => ({ babiesList: state.babiesList.babies }))
     const [ baby, setBaby] = React.useState({ 
         "list-id": parseInt(localStorage.getItem('user_id')),
         "baby-name": ""
