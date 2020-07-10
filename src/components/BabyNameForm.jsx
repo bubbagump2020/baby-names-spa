@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import { toast } from 'react-toastify';
 import './BabyNameForm.css'
+import { useHistory } from 'react-router-dom';
 
 const encode = (data) => {
     return Object.keys(data)
@@ -16,6 +17,8 @@ const encode = (data) => {
 }
 
 const BabyNameForm = () => {
+
+    const history = useHistory()
 
     const dispatch = useDispatch();
     const { babiesList } = useSelector(state => ({ babiesList: state.babiesList.babies }))
@@ -100,7 +103,7 @@ const BabyNameForm = () => {
     }
 
     const handleSubmit = (e) => {
-        e.preventDefault()
+        
         fetch("/", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -120,6 +123,7 @@ const BabyNameForm = () => {
                 }
             })
             .catch(error => console.log(error))
+        e.preventDefault()
     }
 
     return(
@@ -130,7 +134,7 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <form id="form" onSubmit={handleSubmit}>
+                        <form id="form" onSubmit={handleSubmit} action="/" name="baby" method="post" netlify>
                             <div>
                                 <label>Name! </label>
                                 <div>
