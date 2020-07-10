@@ -1,7 +1,7 @@
 const axios = require("axios")
 const { Pool } = require('pg')
-const ROOT_URL = 'https://baby-maker-2000-api.herokapp.com'
-// const ROOT_URL = 'http://localhost:3001'
+// const ROOT_URL = 'https://baby-maker-2000-api.herokapp.com'
+const ROOT_URL = 'http://localhost:3001'
 
 const pool = new Pool({
     connectionString: "postgres://lpqbtrivtlrque:82902c27b34536fbf4c2db63aa18e3a591a154d770080c51988209927472ccab@ec2-34-192-173-173.compute-1.amazonaws.com:5432/d2tqs2vejh2i12",
@@ -12,8 +12,8 @@ const pool = new Pool({
 
 exports.handler = async (event, context) => {
     const path = JSON.parse(event.body).payload.data.referrer
-    // const pathname = new URL(url).pathname
-    console.log(path)
+    const pathname = new URL(path).pathname
+    console.log(ROOT_URL + pathname)
     
     let form = JSON.parse(event.body).payload.data
     // console.log(form)
@@ -21,8 +21,8 @@ exports.handler = async (event, context) => {
     let duplicateMessage = null
     let searchResponse;
     let duplicateResponse;
-    // const listResponse = await axios.get(`${ROOT_URL}` + `${pathname}`)
-    // console.log(listResponse.data.list.id)
+    const listResponse = await axios.get(ROOT_URL + pathname)
+    console.log(listResponse.data.list.id)
     try {
         // let babyRequest = [
         //     listResponse.data.list.id,
