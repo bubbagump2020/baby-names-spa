@@ -1,5 +1,4 @@
 [build]
-    CI='' yarn build
     command = "yarn build"
     functions = "/functions"
     publish = "public"
