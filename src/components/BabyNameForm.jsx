@@ -8,7 +8,6 @@ import Col from 'react-bootstrap/Col'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import { toast } from 'react-toastify';
 import './BabyNameForm.css'
-import { useHistory } from 'react-router-dom';
 
 const encode = (data) => {
     return Object.keys(data)
