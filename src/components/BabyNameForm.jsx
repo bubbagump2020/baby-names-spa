@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector} from 'react-redux'
-import { get, patch } from 'axios'
-import { getBabies, enableBaby, disableBaby } from '../redux/actions/baby-actions'
+import { get } from 'axios'
+import { getBabies } from '../redux/actions/baby-actions'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
