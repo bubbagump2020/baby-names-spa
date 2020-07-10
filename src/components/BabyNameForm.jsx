@@ -65,35 +65,35 @@ const BabyNameForm = () => {
         setBaby({ ...baby, "baby-name": value })
     }
 
-    const handleClick = async (e) => {
-        e.preventDefault()
-        let thisBaby = {}
-        let babies = babiesList
-        for(let i = 0; i < babies.length; i++){
-            if(e.target.id === babies[i].id){
-                thisBaby = babies[i]
-            }
-        }
-        if (thisBaby.enabled){
-            thisBaby.enabled = false
-            dispatch(disableBaby(thisBaby.id))
-        } else {
-            thisBaby.enabled = true
-            dispatch(enableBaby(thisBaby.id))
-        }
-        let babyRequest = {
-            "baby": {
-                "id": thisBaby.id,
-                "enabled": thisBaby.enabled
-            }
-        }
-        try{
-            // await patch(`http://localhost:8888/.netlify/functions/update-baby`, babyRequest)
-            await patch("https://baby-maker-2000.netlify.app/.netlify/functions/update-baby", babyRequest)
-        } catch (err) {
-            console.log(err)
-        }
-    }
+    // const handleClick = async (e) => {
+    //     e.preventDefault()
+    //     let thisBaby = {}
+    //     let babies = babiesList
+    //     for(let i = 0; i < babies.length; i++){
+    //         if(e.target.id === babies[i].id){
+    //             thisBaby = babies[i]
+    //         }
+    //     }
+    //     if (thisBaby.enabled){
+    //         thisBaby.enabled = false
+    //         dispatch(disableBaby(thisBaby.id))
+    //     } else {
+    //         thisBaby.enabled = true
+    //         dispatch(enableBaby(thisBaby.id))
+    //     }
+    //     let babyRequest = {
+    //         "baby": {
+    //             "id": thisBaby.id,
+    //             "enabled": thisBaby.enabled
+    //         }
+    //     }
+    //     try{
+    //         // await patch(`http://localhost:8888/.netlify/functions/update-baby`, babyRequest)
+    //         await patch("https://baby-maker-2000.netlify.app/.netlify/functions/update-baby", babyRequest)
+    //     } catch (err) {
+    //         console.log(err)
+    //     }
+    // }
 
     window.onload=function() {
         let element = document.getElementById("name-list")
@@ -107,7 +107,7 @@ const BabyNameForm = () => {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            
+
             body: encode({"form-name": "baby", ...baby})
         })
             .then(response => response.json())
