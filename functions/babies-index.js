@@ -37,7 +37,7 @@ exports.handler = async (event, context) => {
             client.release()
         }
         console.log(searchResponse.rows)
-        const searchAxiosResponse = await axios.get(`${ROOT_URL}/lists/${path}`)
+        const searchAxiosResponse = await axios.get(`${ROOT_URL}/babies`)
         console.log(searchAxiosResponse)
         return{
             statusCode: 200,
