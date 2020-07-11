@@ -32,14 +32,14 @@ exports.handler = async (event, context) => {
         const searchAxiosResponse = await axios.get(`${ROOT_URL}/babies`)
 
         searchAxiosResponse.data.map(baby => {
-            if(baby.list_id = listResponse){
+            if(baby.list_id === listResponse){
                 searchResponse.push(baby)
             }
         })
         console.log(searchResponse)
         return{
             statusCode: 200,
-            body: "JSON.stringify(searchResponse)"
+            body: JSON.stringify(searchResponse)
         }
     } catch(err){
         console.log(err)
