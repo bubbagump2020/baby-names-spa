@@ -1,5 +1,6 @@
 const { Pool } = require('pg')
-const ROOT_URL = 'https://baby-maker-2000-api.herokuapp.com'
+// const ROOT_URL = 'https://baby-maker-2000-api.herokuapp.com'
+// const ROOT_URL = 'http://localhost:3001'
 const axios = require('axios')
 
 const pool = new Pool({
@@ -10,33 +11,30 @@ const pool = new Pool({
 })
 
 exports.handler = async (event, context) => {
-    console.log(event)
     const path = event.headers.referer.split('/').pop()
-    console.log(path)
     let searchResponse = []
     let listResponse = null
  
     try{
         const listQuery = `SELECT id FROM lists WHERE unique_id='${path}'`;
-        console.log(listQuery)
         const listClient = await pool.connect()
         try {
             listResponse = await listClient.query(listQuery)
             listResponse = parseInt(listResponse.rows[0].id)
-            console.log(listResponse)
+            console.log(`This listResponse id is ${listResponse}`)
         } finally {
             listClient.release()
         }
 
         // console.log(axios)
-        const searchAxiosResponse = await axios.get(`${ROOT_URL}/babies`)
+        // const searchAxiosResponse = await axios.get(`${ROOT_URL}/babies`)
 
-        searchAxiosResponse.data.map(baby => {
-            if(baby.list_id === listResponse){
-                searchResponse.push(baby)
-            }
-        })
-        console.log(searchResponse)
+        // searchAxiosResponse.data.map(baby => {
+        //     if(baby.list_id === listResponse){
+        //         searchResponse.push(baby)
+        //     }
+        // })
+        // console.log(searchResponse)
         return{
             statusCode: 200,
             body: JSON.stringify(searchResponse)

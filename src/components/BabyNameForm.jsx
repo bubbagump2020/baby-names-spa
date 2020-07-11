@@ -6,8 +6,6 @@ import Col from 'react-bootstrap/Col'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Spinner from 'react-bootstrap/Spinner'
 import './BabyNameForm.css'
-import { toast } from 'react-toastify';
-
 
 const encode = (data) => {
     return Object.keys(data)
@@ -27,6 +25,7 @@ const BabyNameForm = () => {
     React.useEffect(() => {
         const gettingBabies = async () => {
            try {
+                // const response = await get('http://localhost:8888/.netlify/functions/babies-index')
                 const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
                 if (response.status === 200){
                         setBabies(await response.data)
@@ -34,7 +33,6 @@ const BabyNameForm = () => {
            } catch (err){
                 console.log(err)
            }
-
         }
         gettingBabies();
     }, [])
@@ -62,27 +60,16 @@ const BabyNameForm = () => {
     React.useEffect(() => {
         const gettingBabies = async () => {
             try {
-                 const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
-                 if (response.status === 200){
-                    if (response.data.length !== 0){
-                        if (response.data.length === babies.length){
-                            return(
-                                toast.error('Baby already made')
-                            )
-                        } else {
-                            setBabies(response.data)
-                        }
-                    } else {
-                        setBabies(response.data)
-                    }
-                 }
+                // const response = await get('http://localhost:8888/.netlify/functions/babies-index')
+                const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
+                setBabies(response.data)
+                console.log(response.data)
             } catch (err){
                  console.log(err)
             }
- 
          }
         gettingBabies();
-    }, [getBabiesNow, babies.length])
+    }, [getBabiesNow])
 
     const handleChange = (e) => {
         e.preventDefault()
