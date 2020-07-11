@@ -42,7 +42,7 @@ const BabyNameForm = () => {
     }, [])
 
     React.useEffect(() => {
-        return showBabies()
+        return () => showBabies()
     })
 
     const showBabies = () => {
