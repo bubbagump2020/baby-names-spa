@@ -13,7 +13,7 @@ exports.handler = async (event, context) => {
     console.log(event)
     const path = event.headers.referer.split('/').pop()
     console.log(path)
-    let searchResponse = null
+    let searchResponse = []
     let listResponse = null
  
     try{
@@ -27,21 +27,19 @@ exports.handler = async (event, context) => {
         } finally {
             listClient.release()
         }
-        const searchQuery = `SELECT id, baby_name, enabled FROM babies WHERE list_id=${listResponse}`
-        console.log(searchQuery)
-        const client = await pool.connect()
-        try{
-            searchResponse = await client.query(searchQuery)
- 
-        } finally{
-            client.release()
-        }
+
         // console.log(axios)
         const searchAxiosResponse = await axios.get(`${ROOT_URL}/babies`)
-        console.log(searchAxiosResponse)
+
+        searchAxiosResponse.data.map(baby => {
+            if(baby.list_id = listResponse){
+                searchResponse.push(baby)
+            }
+        })
+        console.log(searchResponse)
         return{
             statusCode: 200,
-            body: JSON.stringify(searchResponse.rows)
+            body: "JSON.stringify(searchResponse)"
         }
     } catch(err){
         console.log(err)
