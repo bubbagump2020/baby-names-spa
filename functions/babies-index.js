@@ -16,14 +16,17 @@ exports.handler = async (event, context) => {
  
     try{
         const listQuery = `SELECT id FROM lists WHERE unique_id='${path}'`;
+        console.log(listQuery)
         const listClient = await pool.connect()
         try {
             listResponse = await listClient.query(listQuery)
             listResponse = parseInt(listResponse.rows[0].id)
+            console.log(listResponse)
         } finally {
             listClient.release()
         }
         const searchQuery = `SELECT id, baby_name, enabled FROM babies WHERE list_id=${listResponse}`
+        console.log(searchQuery)
         const client = await pool.connect()
         try{
             searchResponse = await client.query(searchQuery)
