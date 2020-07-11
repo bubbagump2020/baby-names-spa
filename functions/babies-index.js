@@ -1,6 +1,6 @@
 const { Pool } = require('pg')
 const ROOT_URL = 'http://baby-maker-2000.herokuapp.com'
-const { axios } = require('axios')
+const axios = require('axios')
 
 const pool = new Pool({
     connectionString: "postgres://lpqbtrivtlrque:82902c27b34536fbf4c2db63aa18e3a591a154d770080c51988209927472ccab@ec2-34-192-173-173.compute-1.amazonaws.com:5432/d2tqs2vejh2i12",
@@ -36,9 +36,9 @@ exports.handler = async (event, context) => {
         } finally{
             client.release()
         }
-        console.log(axios)
-        // const searchAxiosResponse = await axios.get(`${ROOT_URL}/babies`)
-        // console.log(searchAxiosResponse)?
+        // console.log(axios)
+        const searchAxiosResponse = await axios.get(`${ROOT_URL}/babies`)
+        console.log(searchAxiosResponse)?
         return{
             statusCode: 200,
             body: JSON.stringify(searchResponse.rows)
