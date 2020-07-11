@@ -10,6 +10,7 @@ const pool = new Pool({
 exports.handler = async (event, context) => {
     console.log(event)
     const path = event.headers.referer.split('/').pop()
+    console.log(path)
     let searchResponse = null
     let listResponse = null
  
