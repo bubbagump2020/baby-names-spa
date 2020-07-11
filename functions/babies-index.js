@@ -1,6 +1,4 @@
 const { Pool } = require('pg')
-// const ROOT_URL = 'https://baby-maker-2000-api.herokuapp.com'
-// const ROOT_URL = 'http://localhost:3001'
 const axios = require('axios')
 
 const pool = new Pool({
@@ -35,7 +33,7 @@ exports.handler = async (event, context) => {
         }
         return{
             statusCode: 200,
-            body: JSON.stringify(searchResponse)
+            body: JSON.stringify(searchResponse.rows)
         }
     } catch(err){
         console.log(err)
