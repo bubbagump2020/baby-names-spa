@@ -7,7 +7,6 @@ const pool = new Pool({
     }
 })
 
-
 exports.handler = async(event, context) => {
 
     const baby_id = JSON.parse(event.body).baby.id

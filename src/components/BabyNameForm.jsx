@@ -1,14 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux'
 import { get, patch } from 'axios'
-import { disableBaby, enableBaby } from '../redux/actions/baby-actions'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Jumbotron from 'react-bootstrap/Jumbotron'
-import { toast } from 'react-toastify';
 import Spinner from 'react-bootstrap/Spinner'
 import './BabyNameForm.css'
+import { toast } from 'react-toastify';
 
 
 const encode = (data) => {
@@ -19,12 +17,12 @@ const encode = (data) => {
 
 const BabyNameForm = () => {
 
-    const dispatch = useDispatch();
     const [ babies, setBabies ] = React.useState([])
     const [ baby, setBaby] = React.useState({ 
         "list-id": parseInt(localStorage.getItem('list_id')),
         "baby-name": ""
     })
+    const [ getBabiesNow, setGetBabiesNow ] = React.useState(false)
 
     React.useEffect(() => {
         const gettingBabies = async () => {
@@ -51,7 +49,7 @@ const BabyNameForm = () => {
                 return(
                     <div key={baby.id} style={{cursor: "pointer"}}>
                         <li ><br></br>
-                            <p onClick={handleClick} id={baby.id} style={{textDecorationLine: baby.enabled ? "none" : "line-through",}}>
+                            <p onClick={handleClick} id={baby.id} >
                                 {baby.baby_name}
                             </p>
                         </li>
@@ -62,8 +60,29 @@ const BabyNameForm = () => {
     }
 
     React.useEffect(() => {
-        return () => showBabies()
-    }, [babies.length])
+        const gettingBabies = async () => {
+            try {
+                 const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
+                 if (response.status === 200){
+                    if (response.data.length !== 0){
+                        if (response.data.length === babies.length){
+                            return(
+                                toast.error('Baby already made')
+                            )
+                        } else {
+                            setBabies(response.data)
+                        }
+                    } else {
+                        setBabies(response.data)
+                    }
+                 }
+            } catch (err){
+                 console.log(err)
+            }
+ 
+         }
+        gettingBabies();
+    }, [getBabiesNow, babies.length])
 
     const handleChange = (e) => {
         e.preventDefault()
@@ -79,12 +98,13 @@ const BabyNameForm = () => {
                 thisBaby = babies[i]
             }
         }
+        let element = document.getElementById(thisBaby.id)
         if (thisBaby.enabled){
             thisBaby.enabled = false
-            dispatch(disableBaby(thisBaby.id))
+            element.style.textDecorationLine = "none"
         } else {
             thisBaby.enabled = true
-            dispatch(enableBaby(thisBaby.id))
+            element.style.textDecorationLine = "line-through"
         }
         let babyRequest = {
             "baby": {
@@ -105,6 +125,11 @@ const BabyNameForm = () => {
     }
 
     const handleSubmit = (e) => {
+            if(!getBabiesNow){
+                setGetBabiesNow(true)
+            } else {
+                setGetBabiesNow(false)
+            }
              fetch("/index.html", {
                     method: "POST",
                     headers: {
@@ -112,19 +137,7 @@ const BabyNameForm = () => {
                     },
                     body: encode({"form-name": "baby", ...baby})
                 })
-                    .then((response) => {
-                        alert("Submitted!")
-                        Promise.resolve(response)
-                            .then(response => response.json())
-                            .then(data => {
-                                if(data.message){
-                                    toast.error('Baby already made!')
-                                } else {
-                                    setBabies(data)
-                                    toast.success('Baby made!')
-                                }
-                            })
-                    })
+                    .then(() => alert("Submitted!"))
                     .catch(error => console.log(error))
         e.preventDefault()
     }
