@@ -43,7 +43,7 @@ const BabyNameForm = () => {
 
     React.useEffect(() => {
         showBabies()
-    }, [babies.length])
+    }, [babies.length, showBabies])
 
     const showBabies = () => {
         if(babies === undefined) {
