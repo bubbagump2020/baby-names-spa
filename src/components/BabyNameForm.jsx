@@ -41,9 +41,9 @@ const BabyNameForm = () => {
         gettingBabies();
     }, [])
 
-    React.useEffect(() => {
-        showBabies()
-    }, [babies.length, showBabies])
+    React.useCallback(() => {
+        return showBabies()
+    }, [babies.length])
 
     const showBabies = () => {
         if(babies === undefined) {
