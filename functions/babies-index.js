@@ -30,6 +30,7 @@ exports.handler = async (event, context) => {
         } finally{
             client.release()
         }
+        console.log(searchResponse.rows)
         return{
             statusCode: 200,
             body: JSON.stringify(searchResponse.rows)

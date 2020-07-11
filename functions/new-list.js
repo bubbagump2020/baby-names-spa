@@ -3,7 +3,6 @@ const randomstring = require('randomstring')
 const ROOT_URL = 'https://baby-maker-2000-api.herokuapp.com'
 
 exports.handler = async (event, context) => {
-    // console.log(event)
     const request = {
         unique_id: randomstring.generate({
             length: 12,

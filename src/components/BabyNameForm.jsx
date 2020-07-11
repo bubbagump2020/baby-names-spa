@@ -1,12 +1,13 @@
 import React from 'react';
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { get, patch } from 'axios'
-import { getBabies, disableBaby, enableBaby } from '../redux/actions/baby-actions'
+import { disableBaby, enableBaby } from '../redux/actions/baby-actions'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import { toast } from 'react-toastify';
+import Spinner from 'react-bootstrap/Spinner'
 import './BabyNameForm.css'
 
 
@@ -19,7 +20,7 @@ const encode = (data) => {
 const BabyNameForm = () => {
 
     const dispatch = useDispatch();
-    const { babiesList } = useSelector(state => ({ babiesList: state.babiesList.babies }))
+    const [ babies, setBabies ] = React.useState([])
     const [ baby, setBaby] = React.useState({ 
         "list-id": parseInt(localStorage.getItem('list_id')),
         "baby-name": ""
@@ -27,13 +28,10 @@ const BabyNameForm = () => {
 
     React.useEffect(() => {
         const gettingBabies = async () => {
-
-           let babies = [];
            try {
                 const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
                 if (response.status === 200){
-                        babies = response.data
-                        dispatch(getBabies(babies))
+                        setBabies(await response.data)
                 }
            } catch (err){
                 console.log(err)
@@ -41,32 +39,39 @@ const BabyNameForm = () => {
 
         }
         gettingBabies();
-    }, [dispatch])
+    }, [])
+
+    React.useEffect(() => {
+        showBabies()
+    }, [babies.length])
 
     const showBabies = () => {
-        return babiesList.map(baby => {
-            return(
-                <div key={baby.id} style={{cursor: "pointer"}}>
-                    <li ><br></br>
-                        <p onClick={handleClick} id={baby.id} style={{textDecorationLine: baby.enabled ? "none" : "line-through",}}>
-                            {baby.baby_name}
-                        </p>
-                    </li>
-                </div>
-            )
-        })
+        if(babies === undefined) {
+            return <Spinner animation="border" role="status" />
+        } else {
+            return babies.map(baby => {
+                return(
+                    <div key={baby.id} style={{cursor: "pointer"}}>
+                        <li ><br></br>
+                            <p onClick={handleClick} id={baby.id} style={{textDecorationLine: baby.enabled ? "none" : "line-through",}}>
+                                {baby.baby_name}
+                            </p>
+                        </li>
+                    </div>
+                )
+            })
+        }
     }
 
     const handleChange = (e) => {
         e.preventDefault()
-        const { value} = e.target
+        const { value } = e.target
         setBaby({ ...baby, "baby-name": value })
     }
 
     const handleClick = async (e) => {
         e.preventDefault()
         let thisBaby = {}
-        let babies = babiesList
         for(let i = 0; i < babies.length; i++){
             if(e.target.id === babies[i].id){
                 thisBaby = babies[i]
@@ -98,38 +103,27 @@ const BabyNameForm = () => {
     }
 
     const handleSubmit = (e) => {
-        fetch("/index.html", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: encode({"form-name": "baby", ...baby})
-        })
-            .then((response) => {
-                alert("Was a baby made? Let's find out!")
-                Promise.resolve(response)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data)
-                        if(data.message){
-                            toast.error('That baby already exists!', {
-                                position: "top-center",
-                                progress: undefined,
-                                closeOnClick: true,
-                                hideProgressBar: true,
+             fetch("/index.html", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: encode({"form-name": "baby", ...baby})
+                })
+                    .then((response) => {
+                        alert("Submitted!")
+                        Promise.resolve(response)
+                            .then(response => response.json())
+                            .then(data => {
+                                if(data.message){
+                                    toast.error('Baby already made!')
+                                } else {
+                                    setBabies(data)
+                                    toast.success('Baby made!')
+                                }
                             })
-                        } else {
-                            dispatch(getBabies(data))
-                            toast.success('Baby made!', {
-                                position: "top-center",
-                                progress: undefined,
-                                closeOnClick: true,
-                                hideProgressBar: true,
-                            })
-                        }
                     })
-            })
-            .catch(error => console.log(error))
+                    .catch(error => console.log(error))
         e.preventDefault()
     }
 
@@ -141,13 +135,13 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <form id="form" onSubmit={handleSubmit} netlify netlify-honeypot="bot-fields" name="baby" method="post">
+                        <form id="form" onSubmit={handleSubmit} netlify-honeypot="bot-fields" name="baby" method="post">
                             <input type="hidden" name="form-name" value="baby" />
                             <div>
                                 <label>Name! </label>
                                 <div>
                                     <input required id="name-input" placeholder="Baby Name!" type="text" name="baby-name" value={baby["baby-name"]} onChange={handleChange} />
-                                    <input hidden="true" type="number" name="list-id" value={baby.list_id} />
+                                    <input hidden type="number" name="list-id" value={baby.list_id} />
                                 </div>
                             </div><br></br>
                             <div>

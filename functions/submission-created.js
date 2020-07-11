@@ -27,7 +27,6 @@ exports.handler = async (event, context) => {
             listClient.release()
         }
 
-
         const duplicateClient = await pool.connect()
         const duplicateQuery = `SELECT baby_name FROM babies WHERE baby_name='${form['baby-name']}' AND list_id=${listResponse}` 
         
@@ -62,8 +61,6 @@ exports.handler = async (event, context) => {
         } finally{
             searchClient.release()
         }
-
-        console.log(searchResponse)
 
         return{
             statusCode: 200,
