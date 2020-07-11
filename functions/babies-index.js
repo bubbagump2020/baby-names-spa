@@ -1,5 +1,5 @@
 const { Pool } = require('pg')
-const ROOT_URL = 'http://baby-maker-2000.herokuapp.com'
+const ROOT_URL = 'https://baby-maker-2000.herokuapp.com'
 const axios = require('axios')
 
 const pool = new Pool({
