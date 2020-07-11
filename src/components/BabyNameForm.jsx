@@ -71,7 +71,7 @@ const BabyNameForm = () => {
         setBaby({ ...baby, "baby-name": value })
     }
 
-    const handleClick = (e) => {
+    const handleClick = async (e) => {
         e.preventDefault()
         let thisBaby = {}
         for(let i = 0; i < babies.length; i++){
