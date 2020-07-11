@@ -41,9 +41,7 @@ const BabyNameForm = () => {
         gettingBabies();
     }, [])
 
-    React.useEffect(() => {
-        return () => showBabies()
-    })
+
 
     const showBabies = () => {
         if(babies === undefined) {
@@ -63,13 +61,17 @@ const BabyNameForm = () => {
         }
     }
 
+    React.useEffect(() => {
+        return () => showBabies()
+    }, [babies.length])
+
     const handleChange = (e) => {
         e.preventDefault()
         const { value } = e.target
         setBaby({ ...baby, "baby-name": value })
     }
 
-    const handleClick = async (e) => {
+    const handleClick = (e) => {
         e.preventDefault()
         let thisBaby = {}
         for(let i = 0; i < babies.length; i++){
