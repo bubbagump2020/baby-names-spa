@@ -25,16 +25,14 @@ exports.handler = async (event, context) => {
         } finally {
             listClient.release()
         }
-
-        // console.log(axios)
-        // const searchAxiosResponse = await axios.get(`${ROOT_URL}/babies`)
-
-        // searchAxiosResponse.data.map(baby => {
-        //     if(baby.list_id === listResponse){
-        //         searchResponse.push(baby)
-        //     }
-        // })
-        // console.log(searchResponse)
+        const searchQuery = `SELECT id, baby_name, enabled FROM babies WHERE list_id=${listResponse}`
+        const searchClient = await pool.connect()
+        try{
+            searchResponse = await searchClient.query(searchQuery)
+            console.log(searchResponse)
+        } finally {
+            searchClient.release()
+        }
         return{
             statusCode: 200,
             body: JSON.stringify(searchResponse)
