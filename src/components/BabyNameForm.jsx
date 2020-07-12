@@ -126,7 +126,7 @@ const BabyNameForm = () => {
                                 <div>
                                     <input required id="name-input" placeholder="Baby Name!" type="text" name="baby_name" value={baby.baby_name} onChange={e => dispatch(babyName(e.target.value))} />
                                     <input hidden type="number" name="list_id" value={baby.list_id} />
-                                    <input hidden value={baby.enabled}/>
+                                    <input hidden checkbox value="true"/>
                                 </div>
                             </div><br></br>
                             <div>
