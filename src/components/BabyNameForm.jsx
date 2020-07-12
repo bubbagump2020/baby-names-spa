@@ -26,7 +26,6 @@ const BabyNameForm = () => {
         const gettingBabies = async () => {
            try {
                console.log('getting babies')
-                // const response = await get('http://localhost:8888/.netlify/functions/babies-index')
                 const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
                 if (response.status === 200 && response.data !== ""){
                         dispatch(getBabies(response.data))
@@ -126,6 +125,7 @@ const BabyNameForm = () => {
                                 <div>
                                     <input required id="name-input" placeholder="Baby Name!" type="text" name="baby_name" value={baby.baby_name} onChange={e => dispatch(babyName(e.target.value))} />
                                     <input hidden type="number" name="list_id" value={baby.list_id} />
+                                    <input hidden type="text" name="enabled" value={baby.enabled} />
                                 </div>
                             </div><br></br>
                             <div>
