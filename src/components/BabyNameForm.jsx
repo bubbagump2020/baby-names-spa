@@ -144,13 +144,13 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <form id="form" data-netlify="true" name="baby">
+                        <form id="form" data-netlify="true" method="post" name="baby">
                             <input type="hidden" name="form-name" value="baby" />
                             <div>
                                 <label>Name! </label>
                                 <div>
                                     <input required id="name-input" placeholder="Baby Name!" type="text" name="baby-name" value={baby["baby-name"]} onChange={handleChange} />
-                                    <input hidden type="number" name="list-id" value={baby.list_id} />
+                                    <input hidden type="number" name="list-id" value={baby["list-id"]} />
                                 </div>
                             </div><br></br>
                             <div>
