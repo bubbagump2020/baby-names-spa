@@ -52,7 +52,7 @@ const BabyNameForm = () => {
                 return(
                     <div key={baby.baby_name} style={{cursor: "pointer"}}>
                         <li ><br></br>
-                            <p onClick={handleClick} id={baby.baby_name} >
+                            <p style={{textDecorationLine: baby.enabled ? "none" : "line-through"}} onClick={handleClick} id={baby.baby_name} >
                                {position}. {baby.baby_name}
                             </p>
                         </li>
@@ -63,6 +63,7 @@ const BabyNameForm = () => {
     }
 
     React.useEffect(() => {
+        console.log('getting updated babies list')
         if (getBabiesNow){
             setGetBabiesNow(false)
             const getBabies = async () => {
