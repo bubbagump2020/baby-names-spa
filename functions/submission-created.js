@@ -35,6 +35,8 @@ exports.handler = async (event, context) => {
             duplicateClient.release()
         }
 
+        console.log(duplicateResponse)
+
         if (duplicateResponse.rows.length === 0){
             
             const babyClient = await pool.connect()
@@ -44,7 +46,6 @@ exports.handler = async (event, context) => {
             } finally{
                 babyClient.release()
             }
-        
         } else {
             duplicateMessage = {
                 message: 'That name already exists for this list'

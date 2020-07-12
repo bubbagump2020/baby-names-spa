@@ -24,6 +24,6 @@ Core Requirements: Met
 ~~4. Real-time updates when multiple people are working on the same list~~  
         Note: might be done, difficult to test currently  
 5. Allow the user to manually prioritize the list using drag-and-drop functionality  
-6. Client-side sorting of names (Alphabetical, By Input Time, By Length)  
+6. Client-side sorting of names (Alphabetical, By Input Time, By Length)  -- Alphabetical Sorting  
 
 Stretch Goals: Mostly done
