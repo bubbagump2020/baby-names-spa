@@ -120,21 +120,21 @@ const BabyNameForm = () => {
         }
     }
 
-    // const handleSubmit = (e) => {
-    //     if(!getBabiesNow){
-    //         fetch("/index.html", {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/x-www-form-urlencoded",
-    //             },
-    //             body: encode({"form-name": "baby", ...baby})
-    //         })
-    //             .then(() => alert("Submitted!"))
-    //             .catch(error => console.log(error))
-    //         e.preventDefault()
-    //     }
-    //     setGetBabiesNow(true)
-    // }
+    const handleSubmit = (e) => {
+        if(!getBabiesNow){
+            fetch("/index.html", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: encode({"form-name": "baby", ...baby})
+            })
+                .then(() => alert("Submitted!"))
+                .catch(error => console.log(error))
+            e.preventDefault()
+        }
+        setGetBabiesNow(true)
+    }
 
     return(
         <Container style={{ margin: '10px'}}>
@@ -144,7 +144,7 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <form id="form" data-netlify="true" method="post" name="baby">
+                        <form id="form" onSubmit={handleSubmit}>
                             <input type="hidden" name="form-name" value="baby" />
                             <div>
                                 <label>Name! </label>
