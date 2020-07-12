@@ -1,12 +1,13 @@
 import React from 'react';
 import { get, patch } from 'axios'
 import Container from 'react-bootstrap/Container'
+import { useDispatch, useSelector } from 'react-redux'
+import { getBabies, babyName } from '../redux/actions/baby-actions'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Spinner from 'react-bootstrap/Spinner'
 import './BabyNameForm.css'
-import { toast } from 'react-toastify';
 
 const encode = (data) => {
     return Object.keys(data)
@@ -16,22 +17,19 @@ const encode = (data) => {
 
 const BabyNameForm = () => {
 
-    const [ babies, setBabies ] = React.useState([])
-    const [ getBabiesNow, setGetBabiesNow ] = React.useState(false)
-    const [ baby, setBaby] = React.useState({ 
-        "list-id": parseInt(localStorage.getItem('list_id')),
-        "baby-name": "",
-        enabled: true
-    })
-    
+    const dispatch = useDispatch()
+    const { baby } = useSelector(state => ({ baby: state.babiesList.baby}))
+    const { babies } = useSelector(state => ({ babies: state.babiesList.babies}))
 
     React.useEffect(() => {
+        console.log('getting babies')
         const gettingBabies = async () => {
            try {
                console.log('getting babies')
+                // const response = await get('http://localhost:8888/.netlify/functions/babies-index')
                 const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
-                if (response.status === 200){
-                        setBabies(await response.data)
+                if (response.status === 200 && response.data !== ""){
+                        dispatch(getBabies(response.data))
                 }
            } catch (err){
                 console.log(err)
@@ -43,11 +41,12 @@ const BabyNameForm = () => {
 
 
     const showBabies = () => {
-        const sortedBabies = babies.sort()
+        const sortedBabies = babies.babies.sort()
         if(sortedBabies === undefined) {
             return <Spinner animation="border" role="status" />
         } else {
             return sortedBabies.map(baby => {
+                console.log(baby)
                 const position = sortedBabies.indexOf(baby) + 1
                 return(
                     <div key={baby.baby_name} style={{cursor: "pointer"}}>
@@ -60,33 +59,6 @@ const BabyNameForm = () => {
                 )
             })
         }
-    }
-
-    React.useEffect(() => {
-        console.log('getting updated babies list')
-        if (getBabiesNow){
-            setGetBabiesNow(false)
-            const getBabies = async () => {
-                try{
-                    const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
-                    if (response.data.length === babies.length) {
-                        toast.error('Baby already made')
-                    } else {
-                        toast.success(`Baby ${baby['baby-name']} was made!`)
-                        setBabies(response.data)
-                    }
-                } catch(err) {
-    
-                }
-            }
-            getBabies()
-        }
-    }, [getBabiesNow])
-
-    const handleChange = (e) => {
-        e.preventDefault()
-        const { value } = e.target
-        setBaby({ ...baby, "baby-name": value })
     }
 
     const handleClick = async (e) => {
@@ -122,6 +94,9 @@ const BabyNameForm = () => {
     }
 
     const handleSubmit = (e) => {
+        let newBabyArray = babies.babies
+        newBabyArray.push(baby)
+        dispatch(getBabies(newBabyArray))
         fetch("/index.html", {
             method: "POST",
             headers: {
@@ -131,7 +106,7 @@ const BabyNameForm = () => {
         })
             .then(() => alert("Submitted!"))
             .catch(error => console.log(error))
-        setGetBabiesNow(true)
+        
         e.preventDefault()
         
     }
@@ -148,8 +123,8 @@ const BabyNameForm = () => {
                             <div>
                                 <label>Name! </label>
                                 <div>
-                                    <input required id="name-input" placeholder="Baby Name!" type="text" name="baby-name" value={baby["baby-name"]} onChange={handleChange} />
-                                    <input hidden type="number" name="list-id" value={baby["list-id"]} />
+                                    <input required id="name-input" placeholder="Baby Name!" type="text" name="baby_name" value={baby.baby_name} onChange={e => dispatch(babyName(e.target.value))} />
+                                    <input hidden type="number" name="list_id" value={baby.list_id} />
                                 </div>
                             </div><br></br>
                             <div>

@@ -1,7 +1,14 @@
 import { babyActions } from '../action-types/index'
 
 const initialState = {
-    babies: []
+    baby: {
+        "list_id": null,
+        "baby_name": "",
+        "enabled": true
+    },
+    babies: [],
+    getBabiesNow: false
+
 }
 
 export function babiesList(state = initialState, action){
@@ -9,26 +16,26 @@ export function babiesList(state = initialState, action){
         case babyActions.GET_BABIES:
             return{
                 ...state,
-                babies: action.payload
+                babies: {
+                    ...state.babies,
+                    babies: action.payload
+                }
             }
-        case babyActions.ENABLE_BABY:
+        case babyActions.BABY_NAME:
             return{
                 ...state,
-                babies: state.babies.map(baby => baby.id === action.payload ?
-                    { ...baby, enabled: true } : baby   
-                )
+                baby: {
+                    ...state.baby,
+                    "baby_name":  action.payload.toLowerCase()
+                }
             }
-        case babyActions.DISABLE_BABY:
+        case babyActions.LIST_ID:
             return{
                 ...state,
-                babies: state.babies.map(baby => baby.id === action.payload ?
-                    { ...baby, enabled: false } : baby    
-                )
-            }
-        case babyActions.ADD_BABY:
-            return{
-                ...state,
-                babies: [ ...state.babies, action.payload]
+                baby: {
+                    ...state.baby,
+                    "list_id": action.payload
+                }
             }
         default:
             return state

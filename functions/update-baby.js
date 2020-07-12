@@ -30,7 +30,7 @@ exports.handler = async(event, context) => {
         } finally {
             getBabyClient.release()
         }
-        console.log(getBabyResponse)
+        
         getBabyResponse.list_id = parseInt(getBabyResponse.list_id)
         return {
             statusCode: 200,

@@ -4,14 +4,18 @@ export const getBabies = (payload) => {
     return { type: actions.babyActions.GET_BABIES, payload }
 }
 
-export const enableBaby = (payload) => {
-    return { type: actions.babyActions.ENABLE_BABY, payload }
-}
-
-export const disableBaby = (payload) => {
-    return { type: actions.babyActions.DISABLE_BABY, payload }
+export const getBabiesNow = (payload) => {
+    return { type: actions.babyActions.GET_BABIES_NOW, payload }
 }
 
 export const addBaby = (payload) => {
     return { type: actions.babyActions.ADD_BABY, payload}
+}
+
+export const babyName = (payload) => {
+    return { type: actions.babyActions.BABY_NAME, payload}
+}
+
+export const listID = (payload) => {
+    return { type: actions.babyActions.LIST_ID, payload}
 }

@@ -6,6 +6,13 @@ const pool = new Pool({
     }
 })
 
+// const pool = new Pool({
+//     connectionString: "postgres://kevin:tiger315@localhost:5432/baby_names_api_development",
+//     ssl: {
+//         rejectUnauthorized: false,
+//     }
+// })
+
 exports.handler = async (event, context) => {
     const path = JSON.parse(event.body).payload.data.referrer
     const pathname = path.split('/').pop()
@@ -31,11 +38,10 @@ exports.handler = async (event, context) => {
         
         try{
             duplicateResponse = await duplicateClient.query(duplicateQuery)
+            console.log(duplicateResponse)
         } finally {
             duplicateClient.release()
         }
-
-        console.log(duplicateResponse)
 
         if (duplicateResponse.rows.length === 0){
             
