@@ -13,7 +13,6 @@ exports.handler = async (event, context) => {
     
     let listResponse;
     let duplicateMessage = null;
-    let searchResponse;
     let duplicateResponse;
     try {
 
@@ -35,7 +34,7 @@ exports.handler = async (event, context) => {
         } finally {
             duplicateClient.release()
         }
-        
+
         if (duplicateResponse.rows.length === 0){
             
             const babyClient = await pool.connect()
@@ -52,20 +51,9 @@ exports.handler = async (event, context) => {
             }
         }
 
-        const searchClient = await pool.connect()
-        const searchQuery = `SELECT id, baby_name, enabled FROM babies WHERE list_id=${listResponse}`
-
-        try{
-            searchResponse = await searchClient.query(searchQuery)
-        } finally{
-            searchClient.release()
-        }
-
-        console.log(searchResponse)
-
         return{
             statusCode: 200,
-            body: "JSON.stringify(duplicateMessage ? duplicateMessage : searchResponse.rows)"
+            body: "Request successfully made"
         }
 
     } catch (err) {

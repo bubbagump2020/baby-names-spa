@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Spinner from 'react-bootstrap/Spinner'
 import './BabyNameForm.css'
+import { toast } from 'react-toastify';
 
 const encode = (data) => {
     return Object.keys(data)
@@ -16,16 +17,18 @@ const encode = (data) => {
 const BabyNameForm = () => {
 
     const [ babies, setBabies ] = React.useState([])
+    const [ getBabiesNow, setGetBabiesNow ] = React.useState(false)
     const [ baby, setBaby] = React.useState({ 
         "list-id": parseInt(localStorage.getItem('list_id')),
-        "baby-name": ""
+        "baby-name": "",
+        enabled: true
     })
-    const [ getBabiesNow, setGetBabiesNow ] = React.useState(false)
+    
 
     React.useEffect(() => {
         const gettingBabies = async () => {
            try {
-                // const response = await get('http://localhost:8888/.netlify/functions/babies-index')
+               console.log('getting babies')
                 const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
                 if (response.status === 200){
                         setBabies(await response.data)
@@ -40,15 +43,17 @@ const BabyNameForm = () => {
 
 
     const showBabies = () => {
-        if(babies === undefined) {
+        const sortedBabies = babies.sort()
+        if(sortedBabies === undefined) {
             return <Spinner animation="border" role="status" />
         } else {
-            return babies.map(baby => {
+            return sortedBabies.map(baby => {
+                const position = sortedBabies.indexOf(baby) + 1
                 return(
-                    <div key={baby.id} style={{cursor: "pointer"}}>
+                    <div key={baby.baby_name} style={{cursor: "pointer"}}>
                         <li ><br></br>
-                            <p onClick={handleClick} id={baby.id} >
-                                {baby.baby_name}
+                            <p onClick={handleClick} id={baby.baby_name} >
+                               {position}. {baby.baby_name}
                             </p>
                         </li>
                     </div>
@@ -58,17 +63,23 @@ const BabyNameForm = () => {
     }
 
     React.useEffect(() => {
-        const gettingBabies = async () => {
-            try {
-                // const response = await get('http://localhost:8888/.netlify/functions/babies-index')
-                const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
-                setBabies(response.data)
-                console.log(response.data)
-            } catch (err){
-                 console.log(err)
+        if (getBabiesNow){
+            setGetBabiesNow(false)
+            const getBabies = async () => {
+                try{
+                    const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
+                    if (response.data.length === babies.length) {
+                        toast.error('Baby already made')
+                    } else {
+                        toast.success(`Baby ${baby['baby-name']} was made!`)
+                        setBabies(response.data)
+                    }
+                } catch(err) {
+    
+                }
             }
-         }
-        gettingBabies();
+            getBabies()
+        }
     }, [getBabiesNow])
 
     const handleChange = (e) => {
@@ -81,21 +92,24 @@ const BabyNameForm = () => {
         e.preventDefault()
         let thisBaby = {}
         for(let i = 0; i < babies.length; i++){
-            if(e.target.id === babies[i].id){
+            if(e.target.id === babies[i].baby_name){
                 thisBaby = babies[i]
             }
         }
-        let element = document.getElementById(thisBaby.id)
+        
         if (thisBaby.enabled){
             thisBaby.enabled = false
-            element.style.textDecorationLine = "none"
         } else {
+
             thisBaby.enabled = true
-            element.style.textDecorationLine = "line-through"
         }
+        let element = document.getElementById(thisBaby.baby_name)
+        element.style.textDecorationLine = thisBaby.enabled ? "none" : "line-through"
+
         let babyRequest = {
             "baby": {
-                "id": thisBaby.id,
+                "list_id": thisBaby.list_id,
+                "baby_name": thisBaby.baby_name,
                 "enabled": thisBaby.enabled
             }
         }
@@ -106,26 +120,17 @@ const BabyNameForm = () => {
         }
     }
 
-    window.onload=function() {
-        let element = document.getElementById("name-list")
-        element.scrollTop = element.scrollHeight
-    }
-
     const handleSubmit = (e) => {
-            if(!getBabiesNow){
-                setGetBabiesNow(true)
-            } else {
-                setGetBabiesNow(false)
-            }
-             fetch("/index.html", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                    },
-                    body: encode({"form-name": "baby", ...baby})
-                })
-                    .then(() => alert("Submitted!"))
-                    .catch(error => console.log(error))
+        setGetBabiesNow(true)
+        fetch("/index.html", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: encode({"form-name": "baby", ...baby})
+        })
+            .then(() => alert("Submitted!"))
+            .catch(error => console.log(error))
         e.preventDefault()
     }
 
