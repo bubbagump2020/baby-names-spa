@@ -41,10 +41,11 @@ const BabyNameForm = () => {
 
 
     const showBabies = () => {
-        const sortedBabies = babies.babies.sort()
-        if(sortedBabies === undefined) {
+        
+        if(babies.babies === undefined) {
             return <Spinner animation="border" role="status" />
         } else {
+            const sortedBabies = babies.babies.sort()
             return sortedBabies.map(baby => {
                 console.log(baby)
                 const position = sortedBabies.indexOf(baby) + 1
