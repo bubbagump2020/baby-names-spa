@@ -80,7 +80,7 @@ const BabyNameForm = () => {
             }
             getBabies()
         }
-    }, [getBabiesNow])
+    }, [getBabiesNow, baby])
 
     const handleChange = (e) => {
         e.preventDefault()
