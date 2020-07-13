@@ -23,7 +23,6 @@ const BabyNameForm = () => {
     const { babies } = useSelector(state => ({ babies: state.babiesList.babies}))
 
     React.useEffect(() => {
-        console.log('getting babies')
         const gettingBabies = async () => {
            try {
                 const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
@@ -39,20 +38,9 @@ const BabyNameForm = () => {
     }, [])
 
     const handleSubmit = (e) => {
-        // Netlify doesn't like having the fetch request wrapped in an if statement
-        // Will have to duplicate check here and at the submission-created function
-        let newBabyArray = babies.babies
-        // Front End duplicate Check
-        // for(let i = 0; i < newBabyArray.length; i++){
-        //     if(newBabyArray[i].baby_name === baby['baby-name']){
-        //         toast('Baby already made')
-        //     } else {
+        let newBabyArray = []
         newBabyArray.push(baby)
         dispatch(getBabies(newBabyArray))
-            // }
-        // }
-
-        // Netlify doesn't care, will still send the request to the function. Will have to duplicate check there.
         fetch("/index.html", {
             method: "POST",
             headers: {
