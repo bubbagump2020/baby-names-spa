@@ -37,30 +37,26 @@ const BabyNameForm = () => {
         gettingBabies();
     }, [])
 
-    const duplicateCheck = (array) => {
-        return new Set(array).size !== array.length
-    }
-
     const handleSubmit = (e) => {
-        console.log(baby)
-        babies.babies.push(baby)
-        if(duplicateCheck(babies.babies)){
-            toast.error('Baby Already Made')
-        } else {
-        dispatch(getBabies(babies.babies))
-        fetch("/index.html", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: encode({"form-name": "baby", ...baby})
-        })
-            .then(() => alert("Submitted!"))
-            .catch(error => console.log(error))
-        toast.success('Baby Made!')
-        }
-        
-        
+        let newBabyArray = babies.babies
+        for(let i = 0; i < babies.babie.length; i++){
+            if(babies.babies[i.baby_name] === baby['baby-name']){
+                toast.error('Baby already made!')
+            } else {
+                newBabyArray.push(baby)
+                dispatch(getBabies(newBabyArray))
+                fetch("/index.html", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: encode({"form-name": "baby", ...baby})
+                })
+                    .then(() => alert("Submitted!"))
+                    .catch(error => console.log(error))
+                toast.success('Baby Made!')
+            }   
+        } 
         e.preventDefault()
     }
 
