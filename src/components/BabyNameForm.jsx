@@ -35,20 +35,14 @@ const BabyNameForm = () => {
         gettingBabies();
     }, [])
 
-    React.useEffect(() => {
+    const handleSubmit = (e) => {
+        babies.babies.push(baby)
         const filteredBabies = babies.babies = babies.babies.filter((baby, index, array) => {
             return index === array.findIndex((b) => (
                 b['baby-name'] === baby['baby-name']
             ))
         })
         dispatch(getBabies(filteredBabies))
-    }, [babies.babies.length])
-
-    const handleSubmit = (e) => {
-        let newBabyArray = []
-        newBabyArray = babies.babies
-        newBabyArray.push(baby)
-        dispatch(getBabies(newBabyArray))
         fetch("/index.html", {
             method: "POST",
             headers: {
