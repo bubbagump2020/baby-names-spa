@@ -70,7 +70,7 @@ const BabyNameForm = () => {
             return <Spinner animation="border" role="status" />
         } else {
             console.log(babies)
-            const sortedBabies = babies.babies.sort()
+            const sortedBabies = Array.from(babies.babies).sort()
             return sortedBabies.map(baby => {
                 const position = sortedBabies.indexOf(baby) + 1
                 return(
