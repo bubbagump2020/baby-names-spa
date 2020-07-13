@@ -38,25 +38,29 @@ const BabyNameForm = () => {
     }, [])
 
     const handleSubmit = (e) => {
+        // Netlify doesn't like having the fetch request wrapped in an if statement
+        // Will have to duplicate check here and at the submission-created function
         let newBabyArray = babies.babies
-        for(let i = 0; i < babies.babie.length; i++){
-            if(babies.babies[i.baby_name] === baby['baby-name']){
-                toast.error('Baby already made!')
+        // Front End duplicate Check
+        for(let i = 0; i < newBabyArray.length; i++){
+            if(newBabyArray[i].baby_name === baby['baby-name']){
+                toast('Baby already made')
             } else {
                 newBabyArray.push(baby)
                 dispatch(getBabies(newBabyArray))
-                fetch("/index.html", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                    },
-                    body: encode({"form-name": "baby", ...baby})
-                })
-                    .then(() => alert("Submitted!"))
-                    .catch(error => console.log(error))
-                toast.success('Baby Made!')
-            }   
-        } 
+            }
+        }
+
+        // Netlify doesn't care, will still send the request to the function. Will have to duplicate check there.
+        fetch("/index.html", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: encode({"form-name": "baby", ...baby})
+        })
+            .then(() => alert("Submitted!"))
+            .catch(error => console.log(error))
         e.preventDefault()
     }
 
