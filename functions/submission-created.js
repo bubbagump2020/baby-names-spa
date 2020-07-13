@@ -10,6 +10,7 @@ exports.handler = async (event, context) => {
     const path = JSON.parse(event.body).payload.data.referrer
     const pathname = path.split('/').pop()
     let form = JSON.parse(event.body).payload.data
+
     let listResponse;
     try {
 
@@ -26,7 +27,7 @@ exports.handler = async (event, context) => {
         const babyClient = await pool.connect()
             const babyQuery = 'INSERT INTO babies(list_id, baby_name) VALUES($1, $2)'
             try{
-                await babyClient.query(babyQuery, [form['list-id'], form['baby-name']])
+                await babyClient.query(babyQuery, [parseInt(form['list-id']), form['baby-name']])
             } finally{
                 babyClient.release()
             }
