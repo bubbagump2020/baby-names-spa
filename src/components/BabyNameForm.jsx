@@ -71,13 +71,12 @@ const BabyNameForm = () => {
             console.log(babies)
             const sortedBabies = babies.babies.sort()
             return sortedBabies.map(baby => {
-                console.log(baby)
                 const position = sortedBabies.indexOf(baby) + 1
                 return(
-                    <div key={baby.baby_name} style={{cursor: "pointer"}}>
+                    <div key={baby['baby-name']} style={{cursor: "pointer"}}>
                         <li ><br></br>
-                            <p id={baby.baby_name} >
-                               {position}. {baby.baby_name}
+                            <p id={baby['baby-name']} >
+                               {position}. {baby['baby-name']}
                             </p>
                         </li>
                     </div>
