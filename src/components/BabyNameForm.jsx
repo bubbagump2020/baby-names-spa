@@ -28,7 +28,8 @@ const BabyNameForm = () => {
            try {
                 const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
                 if (response.status === 200 && response.data !== ""){
-                        dispatch(getBabies(response.data))
+                        const babySet = new Set(response.data)
+                        dispatch(getBabies(babySet))
                 }
            } catch (err){
                 console.log(err)
@@ -42,14 +43,14 @@ const BabyNameForm = () => {
         // Will have to duplicate check here and at the submission-created function
         let newBabyArray = babies.babies
         // Front End duplicate Check
-        for(let i = 0; i < newBabyArray.length; i++){
-            if(newBabyArray[i].baby_name === baby['baby-name']){
-                toast('Baby already made')
-            } else {
-                newBabyArray.push(baby)
-                dispatch(getBabies(newBabyArray))
-            }
-        }
+        // for(let i = 0; i < newBabyArray.length; i++){
+        //     if(newBabyArray[i].baby_name === baby['baby-name']){
+        //         toast('Baby already made')
+        //     } else {
+        newBabyArray.push(baby)
+        dispatch(getBabies(newBabyArray))
+            // }
+        // }
 
         // Netlify doesn't care, will still send the request to the function. Will have to duplicate check there.
         fetch("/index.html", {
@@ -59,7 +60,7 @@ const BabyNameForm = () => {
             },
             body: encode({"form-name": "baby", ...baby})
         })
-            .then(() => alert("Submitted!"))
+            .then(() => alert("Submitted! If no baby shows up then a baby with that name already exists"))
             .catch(error => console.log(error))
         e.preventDefault()
     }
