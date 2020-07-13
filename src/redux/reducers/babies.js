@@ -4,7 +4,6 @@ const initialState = {
     baby: {
         "list-id": null,
         "baby-name": "",
-        "enabled": true
     },
     babies: [],
     getBabiesNow: false

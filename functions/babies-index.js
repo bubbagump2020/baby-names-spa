@@ -23,7 +23,7 @@ exports.handler = async (event, context) => {
             listClient.release()
         }
         console.log(listResponse)
-        const searchQuery = `SELECT list_id, baby_name, enabled FROM babies WHERE list_id=${listResponse} ORDER BY baby_name ASC`
+        const searchQuery = `SELECT "list-id", "baby-name" FROM babies WHERE "list-id"=${listResponse} ORDER BY "baby-name" ASC`
         const searchClient = await pool.connect()
         try{
             searchResponse = await searchClient.query(searchQuery)
