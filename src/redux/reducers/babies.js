@@ -2,8 +2,8 @@ import { babyActions } from '../action-types/index'
 
 const initialState = {
     baby: {
-        "list_id": null,
-        "baby_name": "",
+        "list-id": null,
+        "baby-name": "",
         "enabled": true
     },
     babies: [],
@@ -26,7 +26,7 @@ export function babiesList(state = initialState, action){
                 ...state,
                 baby: {
                     ...state.baby,
-                    "baby_name":  action.payload.toLowerCase()
+                    "baby-name":  action.payload.toLowerCase()
                 }
             }
         case babyActions.LIST_ID:
@@ -34,7 +34,7 @@ export function babiesList(state = initialState, action){
                 ...state,
                 baby: {
                     ...state.baby,
-                    "list_id": action.payload
+                    "list-id": action.payload
                 }
             }
         default:
