@@ -28,7 +28,7 @@ exports.handler = async (event, context) => {
         try {
             duplicateResponse = await duplicateClient.query(duplicateQuery)
             duplicateResponse = duplicateResponse.rows[0]
-            if(duplicateResponse.length !== 0){
+            if(duplicateResponse.length === 0){
                 const babyClient = await pool.connect()
                 const babyQuery = 'INSERT INTO babies(list_id, baby_name) VALUES($1, $2)'
                 try{
