@@ -15,7 +15,7 @@ exports.handler = async (event, context) => {
 
         const listClient = await pool.connect()
         const listQuery = `SELECT id FROM lists WHERE unique_id='${pathname}'`
-
+        console.log(form)
         try{
             listResponse = await listClient.query(listQuery)
             listResponse = listResponse.rows[0].id

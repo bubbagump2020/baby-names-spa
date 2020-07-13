@@ -122,7 +122,7 @@ const BabyNameForm = () => {
                         <h1>The Baby Maker 2000</h1>
                         <p>Simply put in a name and it'll be saved!</p>
                         <p>Note: To return to this list save your URL some where safe</p>
-                        <form id="form" onSubmit={handleSubmit}>
+                        <form id="form" data-netlify="true" onSubmit={handleSubmit}>
                             <div>
                                 <label>Name! </label>
                                 <div>
