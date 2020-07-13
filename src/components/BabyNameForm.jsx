@@ -56,7 +56,7 @@ const BabyNameForm = () => {
                 body: encode({"form-name": "baby", ...baby})
             })
                 .catch(error => console.log(error))
-            toast.succes
+            toast.success('Baby Made!')
         }
         
         
