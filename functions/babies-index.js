@@ -6,13 +6,6 @@ const pool = new Pool({
     }
 })
 
-// const pool = new Pool({
-//     connectionString: "postgres://kevin:tiger315@localhost:5432/baby_names_api_development",
-//     ssl: {
-//         rejectUnauthorized: false,
-//     }
-// })
-
 exports.handler = async (event, context) => {
     const path = event.headers.referer.split('/').pop()
     console.log(path)
@@ -25,7 +18,6 @@ exports.handler = async (event, context) => {
         const listClient = await pool.connect()
         try {
             listResponse = await listClient.query(listQuery)
-            // console.log(listResponse)
             listResponse = parseInt(listResponse.rows[0].id)
         } finally {
             listClient.release()
@@ -38,7 +30,6 @@ exports.handler = async (event, context) => {
         } finally {
             searchClient.release()
         }
-        console.log(searchResponse)
         return{
             statusCode: 200,
             body: JSON.stringify(searchResponse.rows)

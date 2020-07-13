@@ -6,13 +6,6 @@ const pool = new Pool({
     }
 })
 
-// const pool = new Pool({
-//     connectionString: "postgres://kevin:tiger315@localhost:5432/baby_names_api_development",
-//     ssl: {
-//         rejectUnauthorized: false,
-//     }
-// })
-
 
 exports.handler = async(event, context) => {
 

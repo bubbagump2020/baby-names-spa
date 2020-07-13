@@ -6,21 +6,11 @@ const pool = new Pool({
     }
 })
 
-// const pool = new Pool({
-//     connectionString: "postgres://kevin:tiger315@localhost:5432/baby_names_api_development",
-//     ssl: {
-//         rejectUnauthorized: false,
-//     }
-// })
-
 exports.handler = async (event, context) => {
     const path = JSON.parse(event.body).payload.data.referrer
     const pathname = path.split('/').pop()
     let form = JSON.parse(event.body).payload.data
-    
     let listResponse;
-    let duplicateMessage = null;
-    let duplicateResponse;
     try {
 
         const listClient = await pool.connect()
@@ -33,30 +23,13 @@ exports.handler = async (event, context) => {
             listClient.release()
         }
 
-        const duplicateClient = await pool.connect()
-        const duplicateQuery = `SELECT baby_name FROM babies WHERE baby_name='${form['baby-name']}' AND list_id=${listResponse}` 
-        
-        try{
-            duplicateResponse = await duplicateClient.query(duplicateQuery)
-            console.log(duplicateResponse)
-        } finally {
-            duplicateClient.release()
-        }
-
-        if (duplicateResponse.rows.length === 0){
-            
-            const babyClient = await pool.connect()
+        const babyClient = await pool.connect()
             const babyQuery = 'INSERT INTO babies(list_id, baby_name) VALUES($1, $2)'
             try{
-                await babyClient.query(babyQuery, [listResponse, form['baby-name']])
+                await babyClient.query(babyQuery, [listResponse, form.baby_name])
             } finally{
                 babyClient.release()
             }
-        } else {
-            duplicateMessage = {
-                message: 'That name already exists for this list'
-            }
-        }
 
         return{
             statusCode: 200,

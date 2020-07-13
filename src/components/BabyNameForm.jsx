@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Spinner from 'react-bootstrap/Spinner'
 import './BabyNameForm.css'
+import { toast } from 'react-toastify'
 
 const encode = (data) => {
     return Object.keys(data)
@@ -25,8 +26,6 @@ const BabyNameForm = () => {
         console.log('getting babies')
         const gettingBabies = async () => {
            try {
-               console.log('getting babies')
-                // const response = await get('http://localhost:8888/.netlify/functions/babies-index')
                 const response = await get('https://baby-maker-2000.netlify.app/.netlify/functions/babies-index')
                 if (response.status === 200 && response.data !== ""){
                         dispatch(getBabies(response.data))
@@ -38,13 +37,37 @@ const BabyNameForm = () => {
         gettingBabies();
     }, [])
 
+    const duplicateCheck = (array) => {
+        return new Set(array).size !== array.length
+    }
 
+    const handleSubmit = (e) => {
+        console.log(baby)
+        babies.babies.push(baby)
+        if(duplicateCheck(babies.babies)){
+            toast.error('Baby Already Made')
+        } else {
+            dispatch(getBabies(babies.babies))
+            fetch("/index.html", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: encode({"form-name": "baby", ...baby})
+            })
+                .catch(error => console.log(error))
+            toast.succes
+        }
+        
+        
+        e.preventDefault()
+    }
 
     const showBabies = () => {
-        const sortedBabies = babies.babies.sort()
         if(babies.babies === undefined) {
             return <Spinner animation="border" role="status" />
         } else {
+            console.log(babies)
             const sortedBabies = babies.babies.sort()
             return sortedBabies.map(baby => {
                 console.log(baby)
@@ -52,7 +75,7 @@ const BabyNameForm = () => {
                 return(
                     <div key={baby.baby_name} style={{cursor: "pointer"}}>
                         <li ><br></br>
-                            <p style={{textDecorationLine: baby.enabled ? "none" : "line-through"}} onClick={handleClick} id={baby.baby_name} >
+                            <p id={baby.baby_name} >
                                {position}. {baby.baby_name}
                             </p>
                         </li>
@@ -62,55 +85,34 @@ const BabyNameForm = () => {
         }
     }
 
-    const handleClick = async (e) => {
-        e.preventDefault()
-        let thisBaby = {}
-        for(let i = 0; i < babies.length; i++){
-            if(e.target.id === babies[i].baby_name){
-                thisBaby = babies[i]
-            }
-        }
-        
-        if (thisBaby.enabled){
-            thisBaby.enabled = false
-        } else {
-
-            thisBaby.enabled = true
-        }
-        let element = document.getElementById(thisBaby.baby_name)
-        element.style.textDecorationLine = thisBaby.enabled ? "none" : "line-through"
-
-        let babyRequest = {
-            "baby": {
-                "list_id": thisBaby.list_id,
-                "baby_name": thisBaby.baby_name,
-                "enabled": thisBaby.enabled
-            }
-        }
-        try{
-            await patch('https://baby-maker-2000.netlify.app/.netlify/functions/update-baby', babyRequest)
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
-    const handleSubmit = (e) => {
-        let newBabyArray = babies.babies
-        newBabyArray.push(baby)
-        dispatch(getBabies(newBabyArray))
-        fetch("/index.html", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: encode({"form-name": "baby", ...baby})
-        })
-            .then(() => alert("Submitted!"))
-            .catch(error => console.log(error))
-        
-        e.preventDefault()
-        
-    }
+    // const handleClick = async (e) => {
+    //     e.preventDefault()
+    //     let thisBaby = {}
+    //     for(let i = 0; i < babies.length; i++){
+    //         if(e.target.id === babies[i].baby_name){
+    //             thisBaby = babies[i]
+    //         }
+    //     }
+    //     if (thisBaby.enabled){
+    //         thisBaby.enabled = false
+    //     } else {
+    //         thisBaby.enabled = true
+    //     }
+    //     let element = document.getElementById(thisBaby.baby_name)
+    //     element.style.textDecorationLine = thisBaby.enabled ? "none" : "line-through"
+    //     let babyRequest = {
+    //         "baby": {
+    //             "list_id": thisBaby.list_id,
+    //             "baby_name": thisBaby.baby_name,
+    //             "enabled": thisBaby.enabled
+    //         }
+    //     }
+    //     try{
+    //         await patch('https://baby-maker-2000.netlify.app/.netlify/functions/update-baby', babyRequest)
+    //     } catch (err) {
+    //         console.log(err)
+    //     }
+    // }
 
     return(
         <Container style={{ margin: '10px'}}>
@@ -126,7 +128,7 @@ const BabyNameForm = () => {
                                 <div>
                                     <input required id="name-input" placeholder="Baby Name!" type="text" name="baby_name" value={baby.baby_name} onChange={e => dispatch(babyName(e.target.value))} />
                                     <input hidden type="number" name="list_id" value={baby.list_id} />
-                                    <input hidden name="enabled" checkbox value="true"/>
+                                    {/* <input hidden name="enabled" checkbox value="true"/> */}
                                 </div>
                             </div><br></br>
                             <div>
