@@ -8,13 +8,11 @@ const pool = new Pool({
 
 exports.handler = async (event, context) => {
     const path = event.headers.referer.split('/').pop()
-    console.log(path)
     let searchResponse = []
     let listResponse = null
  
     try{
         const listQuery = `SELECT id FROM lists WHERE unique_id='${path}'`;
-        console.log(listQuery)
         const listClient = await pool.connect()
         try {
             listResponse = await listClient.query(listQuery)
@@ -22,7 +20,6 @@ exports.handler = async (event, context) => {
         } finally {
             listClient.release()
         }
-        console.log(listResponse)
         const searchQuery = `SELECT "list-id", "baby-name" FROM babies WHERE "list-id"=${listResponse} ORDER BY "baby-name" ASC`
         const searchClient = await pool.connect()
         try{
