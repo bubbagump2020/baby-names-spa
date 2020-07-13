@@ -27,6 +27,7 @@ exports.handler = async (event, context) => {
         const duplicateQuery = `SELECT baby_name FROM babies WHERE baby_name='${form['baby-name']}' AND list_id=${listResponse}`
         try {
             duplicateResponse = await duplicateClient.query(duplicateQuery)
+            console.log(duplicateResponse)
             duplicateResponse = duplicateResponse.rows[0]
             if(duplicateResponse.length === 0){
                 const babyClient = await pool.connect()
@@ -39,7 +40,17 @@ exports.handler = async (event, context) => {
             }
         } finally {
             duplicateClient.release()
-        }        
+        }
+        
+        if(duplicateResponse.length === 0){
+            const babyClient = await pool.connect()
+            const babyQuery = 'INSERT INTO babies(list_id, baby_name) VALUES($1, $2)'
+            try{
+                await babyClient.query(babyQuery, [listResponse, form['baby-name']])
+            } finally{
+                babyClient.release()
+            }
+        }
 
         return{
             statusCode: 200,
