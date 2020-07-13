@@ -44,20 +44,21 @@ const BabyNameForm = () => {
     const handleSubmit = (e) => {
         console.log(baby)
         babies.babies.push(baby)
-        if(duplicateCheck(babies.babies)){
-            toast.error('Baby Already Made')
-        } else {
-            dispatch(getBabies(babies.babies))
-            fetch("/index.html", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: encode({"form-name": "baby", ...baby})
-            })
-                .catch(error => console.log(error))
-            toast.success('Baby Made!')
-        }
+        // if(duplicateCheck(babies.babies)){
+        //     toast.error('Baby Already Made')
+        // } else {
+        dispatch(getBabies(babies.babies))
+        fetch("/index.html", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: encode({"form-name": "baby", ...baby})
+        })
+            .then(() => alert{"Submitted!"})
+            .catch(error => console.log(error))
+        toast.success('Baby Made!')
+        // }
         
         
         e.preventDefault()
